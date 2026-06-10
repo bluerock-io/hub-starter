@@ -8,7 +8,7 @@ to be helped.
 
 ## Who I am
 
-- Role: [e.g., RevOps Lead at BlueRock]
+- Role: [e.g., RevOps Lead at a 200-person SaaS company]
 - Team: [e.g., reports to the CMO, partners with the AE team on outbound]
 - What I actually do day to day: [3-5 lines. Not your job description —
   what you really spend hours on. e.g., "I run the outbound pipeline,
@@ -20,8 +20,8 @@ to be helped.
 [3-6 bullets — the active workstreams. Be specific enough that an agent
 reading this can name your top priority back to you.]
 
-- [Workstream 1 — e.g., "MCPTR outbound: scoring v2 + Clay enrichment
-  pipeline. Goal: 50 qualified accounts/week into HubSpot."]
+- [Workstream 1 — e.g., "Outbound pipeline: ICP scoring refresh +
+  enrichment workflow. Goal: 50 qualified accounts/week into the CRM."]
 - [Workstream 2]
 - [Workstream 3]
 
