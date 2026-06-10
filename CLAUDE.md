@@ -39,7 +39,9 @@ reading this can name your top priority back to you.]
 - Never commit or push without me saying "commit" or "ship it" — show me
   the change first.
 - Ask before creating new files. Prefer editing what's already there.
-- If you can't verify a claim, say so — don't fabricate.
+- If you can't verify a claim, say so — don't fabricate. (The M1 rule,
+  made standing: the model fills gaps with plausible text unless told
+  not to. This line is the telling.)
 
 ## What "good" output looks like
 
