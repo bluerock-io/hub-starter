@@ -29,6 +29,7 @@ Cursor's Source Control panel.
 | `.claude/agents/scribe.md` | End-of-day note-filer agent | M1 (worked example) · M2 (you run it) |
 | `.claude/agents/daily-brew.md` | Next-morning briefing agent | M2 (you run it) · M5 (you schedule it) |
 | `.claude/commands/follow-up-email/SKILL.md` | Follow-up email skill | M3 (worked example) |
+| `.claude/commands/wrap-up/SKILL.md` | End-of-session wrap ritual: log, commit, push, continuation prompt | M3 (optional second skill) · M6 (your wrap ritual) |
 | `notes/_TEMPLATE.md` | Daily note template (the storage layer) | M2 |
 | `notes/sample-granola.md` | A fictional call transcript for practicing | M2, M3 |
 
