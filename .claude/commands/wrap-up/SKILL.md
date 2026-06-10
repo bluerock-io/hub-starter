@@ -4,7 +4,7 @@ description: >-
   End-of-session ritual: log what this session did, commit, push, and
   hand me a continuation prompt for next time. Use when I say "wrap up",
   "done for today", "end session", "ship it", or "save my progress".
-  Not for mid-session saves — only when the session is actually ending.
+  Not for mid-session saves; only when the session is actually ending.
 ---
 
 Wrap up this working session. Conversations end; the repo persists. Your
@@ -36,7 +36,7 @@ bottom:
 
 **Did:** [1-3 lines]
 **Files:** [paths created or changed]
-**Decided:** [only if a real decision was made — otherwise omit the line]
+**Decided:** [only if a real decision was made; otherwise omit the line]
 **Next:** [what the next session should pick up]
 ```
 
@@ -55,7 +55,7 @@ ritual; it is not yet permission to commit.
 
 Once I confirm: stage the files, commit with the agreed message, push.
 If the push fails (usually authentication), tell me plainly what
-happened and what to click — don't retry silently.
+happened and what to click. Don't retry silently.
 
 ### 5. Hand me the continuation prompt
 
@@ -65,7 +65,7 @@ where this one ended:
 ```
 I'm continuing work in my Hub.
 
-Last session (YYYY-MM-DD): [one sentence — what got done]
+Last session (YYYY-MM-DD): [one sentence: what got done]
 Next up: [what to work on]
 
 Read session-log.md for context.
@@ -77,7 +77,7 @@ knowing what this one knew.
 ## Rules
 
 - Never commit without my explicit go-ahead in this conversation.
-- Never push anything that looks like a credential or a private key —
+- Never push anything that looks like a credential or a private key;
   flag it instead.
 - If nothing changed this session, say so, log the session anyway if I
   want the record, and skip the git steps.
