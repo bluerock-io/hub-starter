@@ -2,7 +2,7 @@
 
 The seeded starting point for your Hub: a repo where your AI agents,
 skills, and working memory live as plain markdown files. This starter
-pairs with the Workshop Wednesdays curriculum (BlueRock for Builders).
+pairs with the BlueRock for Builders curriculum.
 
 You own this repo. Everything in it is yours to customize, and the
 curriculum assumes you will.
