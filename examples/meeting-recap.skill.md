@@ -1,13 +1,23 @@
+<!--
+EXAMPLE — a reference copy, not a live skill.
+
+This is the meeting-recap skill that ships in the BlueRock plugin
+(/bluerock:meeting-recap), shown here un-namespaced so you can read how a good
+skill is built. M3 walks it line by line. To make it yours, copy it to
+.claude/commands/meeting-recap/SKILL.md and edit — your version overrides the
+plugin's. Nothing in examples/ runs; it's here to learn from.
+-->
 ---
-name: follow-up-email
+name: meeting-recap
 description: >-
-  Drafts a follow-up email from call notes, in my voice. Use when I say
-  "draft a follow-up", "follow-up email from this call", or paste meeting
-  notes or a transcript and ask for a recap email. Reads today's notes
-  file (or the file I name) if I don't paste anything.
+  Drafts a meeting recap email from call notes, in my voice — the recap I
+  send the people I met with. Use when I say "recap that meeting", "draft a
+  follow-up", "follow-up email from this call", "send them a summary", or
+  paste meeting notes or a transcript. Reads today's notes file (or the file
+  I name) if I don't paste anything.
 ---
 
-Draft a follow-up email from call notes. The email is FROM me, TO the
+Draft a meeting recap email from call notes. The email is FROM me, TO the
 people I met with. Keep it short enough that a busy person reads the
 whole thing.
 

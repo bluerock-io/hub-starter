@@ -1,6 +1,14 @@
+<!--
+EXAMPLE — a reference copy, not a live agent.
+
+This is the scribe agent that ships in the BlueRock plugin, shown here so you
+can read how it's built. M1 dissects it as the anatomy of an agent. To make it
+yours, copy it to .claude/agents/scribe.md and edit — your version overrides the
+plugin's. Nothing in examples/ runs; it's here to learn from.
+-->
 ---
 name: scribe
-description: My end-of-day note-filer. Tell me what happened today in chat, or paste a Granola transcript, and I'll file it into the right section of notes/<today>.md. Use whenever I want to capture something without thinking about where it goes. Pairs with daily-brew, which reads tomorrow morning whatever I filed today.
+description: My note-filer — capture anything, anytime during the day. Tell me what happened in chat, or paste a Granola transcript, and I'll file it into the right section of notes/<today>.md. Use the moment something happens, not only at end of day. Pairs with daily-brew, which reads tomorrow morning whatever I filed today.
 tools: Read, Write, Edit, Glob
 model: sonnet
 ---

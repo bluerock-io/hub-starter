@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BlueRock Dashboard · for Builders</title>
+
+<!--
+  BlueRock for Builders — local dashboard renderer (beta).
+  Self-contained, no server: open this file directly (file://). It reads
+  window.__BR_DASH__ from dashboard-data.js, which the starter project's
+  /wrap-up skill regenerates from the builder's own session activity.
+
+  Palette = resolved palette-cool-paper from try-bluerock/app/br-theme.css,
+  the SAME tokens as the /learn site (learn-theme.css) — same cream/coral/ink
+  families, radii, blue-tinted shadows, and Source Serif 4 / DM Sans /
+  JetBrains Mono stack. Brand-blue lives only in the logo lockup; UI accent
+  is coral. No left nav (single full-width column). Trend chart mirrors the
+  Hub metrics AreaChart aesthetic in vanilla SVG.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --brand-blue: #006afa;
+  --cream-50:  oklch(1.000 0 0);
+  --cream-100: oklch(0.990 0.003 245);
+  --cream-200: oklch(0.970 0.005 245);
+  --cream-300: oklch(0.935 0.008 245);
+  --border:        oklch(0.910 0.008 245);
+  --border-strong: oklch(0.835 0.010 245);
+  --ink-900: oklch(0.205 0.015 255);
+  --ink-700: oklch(0.345 0.015 255);
+  --ink-600: oklch(0.475 0.015 255);
+  --ink-500: oklch(0.565 0.012 255);
+  --ink-400: oklch(0.665 0.010 255);
+  --coral-700: oklch(0.395 0.155 258);
+  --coral-600: oklch(0.490 0.180 260);
+  --coral-500: oklch(0.640 0.110 260);
+  --coral-100: oklch(0.930 0.035 260);
+  --coral-50:  oklch(0.965 0.018 260);
+  --clay-700: oklch(0.500 0.082 52);
+  --clay-100: oklch(0.945 0.022 55);
+  --clay-50:  oklch(0.975 0.013 55);
+  --clay-border: oklch(0.86 0.05 55);
+  --sage-600: oklch(0.560 0.060 155);
+  --sage-100: oklch(0.940 0.022 150);
+  --sage-ink: oklch(0.36 0.06 155);
+  --sage-border: oklch(0.78 0.05 150);
+  --plum-600: oklch(0.490 0.160 320);
+  --composer-600: oklch(0.540 0.155 200);
+
+  --font-serif: 'Source Serif 4', ui-serif, Georgia, serif;
+  --font-sans:  'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:  'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --r-sm: 8px; --r-md: 12px; --r-lg: 14px; --r-pill: 999px;
+  --shadow-whisper: 0 1px 0 rgba(20,30,50,.04), 0 1px 2px rgba(20,30,50,.04);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv11', 'ss01';
+  color: var(--ink-700);
+  background: var(--cream-100);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+}
+h1, h2, h3, .serif {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--ink-900);
+  letter-spacing: -0.012em;
+  line-height: 1.1;
+  margin: 0;
+}
+.mono { font-family: var(--font-mono); }
+.num {
+  font-family: var(--font-serif); font-weight: 500;
+  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  color: var(--ink-900);
+}
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-500);
+}
+
+/* Topbar */
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 32px; border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--cream-100) 96%, transparent);
+  backdrop-filter: blur(8px);
+  position: sticky; top: 0; z-index: 3;
+}
+.topbar .logo { height: 90px; width: auto; display: block; }
+.topbar .vrule { width: 1px; height: 26px; background: var(--border); }
+.topbar .wsline { font-size: 12px; color: var(--ink-500); }
+.spacer { margin-left: auto; }
+
+/* Layout */
+.content { padding: 26px 32px 56px; max-width: 1180px; margin: 0 auto; }
+
+/* Pills + buttons */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 28px; padding: 0 12px; border-radius: var(--r-pill);
+  background: var(--cream-200); border: 1px solid var(--border);
+  color: var(--ink-700); font-size: 12.5px; font-weight: 500; white-space: nowrap;
+}
+.pill.sage { background: var(--sage-100); border-color: var(--sage-border); color: var(--sage-ink); }
+.pill.coral { background: var(--coral-50); border-color: var(--coral-100); color: var(--coral-700); }
+.pill.sm { height: 26px; font-size: 11.5px; padding: 0 10px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: var(--r-pill); border: 1px solid transparent;
+  font-family: var(--font-sans); font-weight: 500; font-size: 13px;
+  height: 34px; padding: 0 14px; cursor: pointer; white-space: nowrap;
+}
+.btn.primary { background: var(--coral-600); color: #fff; }
+.btn.ghost { background: transparent; color: var(--ink-700); border-color: var(--border-strong); }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--coral-100); color: var(--coral-700);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 12px;
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+/* Welcome strip */
+.welcome {
+  display: flex; align-items: center; gap: 18px;
+  padding: 18px 22px; border: 1px solid var(--border);
+  background: var(--cream-50); border-radius: var(--r-lg); margin-bottom: 28px;
+}
+.welcome .badge {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--coral-50); color: var(--coral-700);
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.welcome .title { font-family: var(--font-serif); font-size: 18px; color: var(--ink-900); }
+.welcome .sub { font-size: 13px; color: var(--ink-500); margin-top: 2px; }
+
+/* Sections */
+.section { margin-bottom: 32px; }
+.section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.section-head .eyebrow { color: var(--coral-700); }
+.section-head h2 { font-size: 22px; }
+.section-head .hint { font-size: 13px; color: var(--ink-500); margin-left: auto; }
+
+/* Cards */
+.card { background: var(--cream-50); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px; display: flex; flex-direction: column; box-shadow: var(--shadow-whisper); }
+.cardhead { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; color: var(--ink-700); }
+.cardhead .hint { font-size: 11px; color: var(--ink-500); font-family: var(--font-mono); letter-spacing: .02em; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-1-2 { display: grid; grid-template-columns: 1fr 1.6fr; gap: 16px; }
+.weekrow { margin-top: 8px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--ink-500); }
+
+/* Trend chart card */
+.trend .chart { width: 100%; margin-top: 14px; }
+.trend .chart svg { width: 100%; height: auto; display: block; }
+.trend .legend-row { display: flex; gap: 22px; justify-content: center; margin-top: 10px; font-size: 12px; color: var(--ink-500); }
+.trend .legend-row .swatch { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+
+/* Actions legend */
+.legend { display: flex; flex-direction: column; gap: 5px; font-size: 11.5px; flex: 1; min-width: 0; }
+.legend .row { display: flex; align-items: center; gap: 6px; }
+.legend .swatch { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.legend .name { color: var(--ink-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.legend .val { color: var(--ink-500); margin-left: auto; font-family: var(--font-mono); }
+
+/* Guardrail calm state */
+.calm {
+  margin-top: 16px; display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; background: var(--sage-100);
+  border: 1px dashed var(--sage-border); border-radius: var(--r-md);
+}
+.calm .ico { width: 32px; height: 32px; border-radius: 50%; background: oklch(0.86 0.05 150); color: var(--sage-ink); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.calm .t { font-size: 14px; font-weight: 500; color: var(--ink-900); }
+.calm .s { font-size: 12.5px; color: var(--ink-600); margin-top: 2px; }
+
+/* Perf stat grid */
+.perfgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; margin-top: 6px; }
+.stat .l { font-size: 11px; color: var(--ink-500); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+.stat .v { font-family: var(--font-serif); font-weight: 500; font-size: 28px; letter-spacing: -.02em; color: var(--ink-900); margin-top: 4px; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat .f { font-size: 12px; color: var(--ink-500); margin-top: 4px; }
+
+/* Brag */
+.brag { background: linear-gradient(180deg, var(--clay-50) 0%, var(--cream-50) 100%); border-color: var(--clay-border); justify-content: center; }
+.brag .kicker { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.brag .kicker .eyebrow { color: var(--clay-700); }
+.brag p { font-family: var(--font-serif); font-size: 17px; line-height: 1.4; margin: 0; color: var(--ink-900); }
+.brag .clean { color: var(--sage-ink); }
+.brag .foot { font-family: var(--font-sans); font-size: 12px; color: var(--ink-600); margin-top: 10px; line-height: 1.5; }
+
+/* Recent table */
+.tbl { width: 100%; border-collapse: collapse; margin-top: 14px; }
+.tbl thead tr { font-size: 11px; color: var(--ink-500); text-transform: uppercase; letter-spacing: .08em; }
+.tbl th { text-align: left; padding: 8px 12px; font-weight: 600; }
+.tbl th.r, .tbl td.r { text-align: right; }
+.tbl tbody tr { border-top: 1px solid var(--border); font-size: 13.5px; }
+.tbl td { padding: 12px; }
+.tbl td.when { color: var(--ink-500); font-family: var(--font-mono); font-size: 11.5px; }
+.tbl td.target { color: var(--ink-900); font-weight: 500; }
+.tbl td.out a { color: var(--ink-700); text-decoration: underline; text-decoration-color: var(--cream-300); text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px; }
+.tbl td.dur { font-family: var(--font-mono); font-size: 12px; color: var(--ink-700); }
+.tbl td.chev { color: var(--ink-400); width: 40px; }
+.filters { margin-left: auto; display: flex; gap: 6px; }
+</style>
+</head>
+<body>
+<div id="topbar"></div>
+<div class="content" id="content"></div>
+
+<!-- Data: /wrap-up overwrites dashboard-data.js with the builder's own activity. -->
+<script src="dashboard-data.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── Fallback so the renderer paints standalone even with no data file ──
+  var D = (window.__BR_DASH__) || {
+    meta: { builder: 'Builder', workspace: '—', region: '—', uptimeLabel: 'online', trialDaysLeft: 14, outputsSince: { count: 0, since: 'this week' }, resume: { chapter: 1, title: 'Sign in & open' } },
+    productivity: { metricLabel: 'Agent actions per week', weekly: [] },
+    cost: { today: 0, deltaPct: 0, series: [0,0,0,0,0,0,0] },
+    actions: { total: 0, byAgent: [] },
+    guardrail: { wired: false, events: [] },
+    perf: { successRate: 0, runs: { successful: 0, total: 0 }, avgSessionMin: 0, avgSessionDeltaMin: 0, outputsShipped: 0 },
+    brag: { sessions: 0, toolsCalled: 0, filesRead: 0, tokens: '0', model: '—', guardrailEvents: 0 },
+    priorities: { set: 0, closed: 0, carried: 0 },
+    runs: [],
+  };
+
+  var TONE = {
+    coral: 'var(--coral-600)', plum: 'var(--plum-600)',
+    composer: 'var(--composer-600)', sage: 'var(--sage-600)',
+  };
+
+  // ── tiny DOM helper ────────────────────────────────────────────────────
+  function el(tag, attrs, children) {
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      if (k === 'class') n.className = attrs[k];
+      else if (k === 'html') n.innerHTML = attrs[k];
+      else if (k === 'style') n.setAttribute('style', attrs[k]);
+      else n.setAttribute(k, attrs[k]);
+    }
+    (children || []).forEach(function (c) {
+      if (c == null) return;
+      n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    });
+    return n;
+  }
+  function svgNS(tag, attrs) {
+    var n = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
+  // ── icons (inline svg paths, stroke = currentColor) ────────────────────
+  function icon(name, size) {
+    size = size || 16;
+    var paths = {
+      doc: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',
+      chevron: '<path d="m9 18 6-6-6-6"/>',
+      shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+      sparkle: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',
+      help: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>',
+      cursor: '<path d="m4 4 7.07 17 2.51-7.39L21 11.07z"/>',
+    };
+    var s = svgNS('svg', { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.8', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    s.innerHTML = paths[name] || '';
+    s.style.display = 'block'; s.style.flexShrink = '0';
+    return s;
+  }
+
+  // ── small charts ────────────────────────────────────────────────────────
+  function sparkline(data, w, h) {
+    w = w || 280; h = h || 44;
+    var min = Math.min.apply(null, data), max = Math.max.apply(null, data);
+    var range = (max - min) || 1, stepX = w / (data.length - 1);
+    var pts = data.map(function (v, i) { return [i * stepX, h - 4 - ((v - min) / range) * (h - 8)]; });
+    var d = pts.map(function (p, i) { return (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ');
+    var area = d + ' L' + w + ',' + h + ' L0,' + h + ' Z';
+    var s = svgNS('svg', { width: w, height: h }); s.style.display = 'block';
+    s.appendChild(svgNS('path', { d: area, fill: 'var(--coral-100)', opacity: '0.6' }));
+    s.appendChild(svgNS('path', { d: d, stroke: 'var(--coral-600)', 'stroke-width': '1.6', fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    return s;
+  }
+  function donut(slices, size) {
+    size = size || 56;
+    var total = slices.reduce(function (a, b) { return a + b.count; }, 0) || 1;
+    var r = size / 2 - 6, c = size / 2, acc = 0;
+    var s = svgNS('svg', { width: size, height: size });
+    s.appendChild(svgNS('circle', { cx: c, cy: c, r: r, fill: 'none', stroke: 'var(--cream-300)', 'stroke-width': '7' }));
+    slices.forEach(function (sl) {
+      var frac = sl.count / total, dash = 2 * Math.PI * r;
+      s.appendChild(svgNS('circle', {
+        cx: c, cy: c, r: r, fill: 'none', stroke: TONE[sl.tone] || 'var(--coral-600)',
+        'stroke-width': '7', 'stroke-dasharray': (dash * frac) + ' ' + dash,
+        'stroke-dashoffset': -(dash * acc), transform: 'rotate(-90 ' + c + ' ' + c + ')',
+      }));
+      acc += frac;
+    });
+    return s;
+  }
+
+  // ── area trend chart (Hub metrics AreaChart aesthetic, vanilla SVG) ─────
+  function smoothPath(pts) {
+    if (pts.length < 2) return pts.length ? 'M' + pts[0][0] + ',' + pts[0][1] : '';
+    var d = 'M' + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      d += ' C' + c1x.toFixed(1) + ',' + c1y.toFixed(1) + ' ' + c2x.toFixed(1) + ',' + c2y.toFixed(1) + ' ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1);
+    }
+    return d;
+  }
+  function areaChart(weekly) {
+    var W = 1100, H = 300, pad = { l: 44, r: 18, t: 18, b: 30 };
+    var iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+    var vals = weekly.map(function (d) { return d.actions; });
+    var rawMax = Math.max.apply(null, vals.concat([1]));
+    var niceMax = Math.ceil(rawMax / 50) * 50;
+    var n = weekly.length;
+    var X = function (i) { return pad.l + (n <= 1 ? 0 : (i / (n - 1)) * iw); };
+    var Y = function (v) { return pad.t + ih - (v / niceMax) * ih; };
+    var pts = weekly.map(function (d, i) { return [X(i), Y(d.actions)]; });
+
+    var parts = [];
+    // horizontal gridlines + y labels
+    for (var t = 0; t <= 3; t++) {
+      var yv = (niceMax / 3) * t, yy = Y(yv);
+      parts.push('<line x1="' + pad.l + '" y1="' + yy.toFixed(1) + '" x2="' + (W - pad.r) + '" y2="' + yy.toFixed(1) + '" stroke="var(--border)" stroke-dasharray="3 3" stroke-width="1" opacity="0.8"/>');
+      parts.push('<text x="' + (pad.l - 8) + '" y="' + (yy + 3.5).toFixed(1) + '" text-anchor="end" font-family="var(--font-mono)" font-size="11" fill="var(--ink-500)">' + Math.round(yv) + '</text>');
+    }
+    // milestone reference lines
+    weekly.forEach(function (d, i) {
+      if (!d.milestone) return;
+      var x = X(i);
+      parts.push('<line x1="' + x.toFixed(1) + '" y1="' + pad.t + '" x2="' + x.toFixed(1) + '" y2="' + (pad.t + ih) + '" stroke="var(--ink-400)" stroke-dasharray="4 3" stroke-width="1" opacity="0.7"/>');
+      var anchor = i > n - 3 ? 'end' : 'start', dx = i > n - 3 ? -6 : 6;
+      parts.push('<text x="' + (x + dx).toFixed(1) + '" y="' + (pad.t + 11) + '" text-anchor="' + anchor + '" font-family="var(--font-sans)" font-size="10.5" font-weight="600" fill="var(--ink-500)">' + d.milestone + '</text>');
+    });
+    // area + line
+    var line = smoothPath(pts);
+    var area = line + ' L' + X(n - 1).toFixed(1) + ',' + (pad.t + ih) + ' L' + X(0).toFixed(1) + ',' + (pad.t + ih) + ' Z';
+    parts.push('<path d="' + area + '" fill="url(#trendGrad)"/>');
+    parts.push('<path d="' + line + '" fill="none" stroke="var(--coral-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>');
+    // x labels + dots
+    weekly.forEach(function (d, i) {
+      parts.push('<text x="' + X(i).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="var(--ink-500)">' + d.week + '</text>');
+      var last = i === n - 1;
+      parts.push('<circle cx="' + X(i).toFixed(1) + '" cy="' + Y(d.actions).toFixed(1) + '" r="' + (last ? 4.5 : 2.5) + '" fill="' + (last ? 'var(--coral-600)' : 'var(--cream-50)') + '" stroke="var(--coral-600)" stroke-width="' + (last ? 2 : 1.6) + '"/>');
+    });
+
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Agent actions per week trend">'
+      + '<defs><linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">'
+      + '<stop offset="0%" stop-color="var(--coral-600)" stop-opacity="0.18"/>'
+      + '<stop offset="100%" stop-color="var(--coral-600)" stop-opacity="0"/>'
+      + '</linearGradient></defs>' + parts.join('') + '</svg>';
+    var box = el('div', { class: 'chart' });
+    box.innerHTML = svg;
+    return box;
+  }
+
+  // ── formatters ────────────────────────────────────────────────────────
+  var DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Today'];
+  function pct(x) { return Math.round(x * 100) + '%'; }
+  function runTime(sec) {
+    if (sec < 60) return sec + 's';
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+  }
+  function whenLabel(iso) {
+    var d = new Date(iso);
+    var mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getUTCMonth()];
+    var hh = String(d.getUTCHours()).padStart(2, '0'), mm = String(d.getUTCMinutes()).padStart(2, '0');
+    return mon + ' ' + d.getUTCDate() + ' · ' + hh + ':' + mm;
+  }
+
+  // ── topbar (logo lockup, no left nav) ───────────────────────────────────
+  function topbar() {
+    var logo = el('img', { class: 'logo', src: 'builders-logo-light.svg', alt: 'BlueRock for Builders' });
+    var right = el('div', { class: 'spacer', style: 'display:flex;align-items:center;gap:10px' }, [
+      el('span', { class: 'pill coral sm' }, ['Trial · ' + D.meta.trialDaysLeft + ' days left']),
+      el('button', { class: 'btn ghost' }, [icon('help', 15), 'Help']),
+      el('span', { class: 'vrule' }, []),
+      el('span', { class: 'avatar' }, ['LV']),
+    ]);
+    return el('div', { class: 'topbar' }, [logo, right]);
+  }
+
+  function welcome() {
+    // Single user, not a team/plan. Only show a count when it's real and derivable
+    // (outputs this week from runs[]); otherwise greet without a fabricated number.
+    var os = D.meta.outputsSince || {};
+    var n = (typeof os.count === 'number') ? os.count : 0;
+    var title = 'Welcome back, ' + D.meta.builder + '.';
+    if (n > 0) {
+      title += ' You’ve shipped ' + n + ' output' + (n === 1 ? '' : 's') + ' ' + (os.since || 'this week') + '.';
+    }
+    return el('div', { class: 'welcome' }, [
+      el('span', { class: 'badge' }, [icon('sparkle', 18)]),
+      el('div', null, [
+        el('div', { class: 'title' }, [title]),
+        el('div', { class: 'sub' }, ['Pick up at Chapter ' + D.meta.resume.chapter + ' — ' + D.meta.resume.title.toLowerCase() + '.']),
+      ]),
+      el('button', { class: 'btn ghost', style: 'margin-left:auto' }, ['Resume curriculum →']),
+    ]);
+  }
+
+  function sectionHead(eyebrow, title, hint) {
+    var kids = [el('span', { class: 'eyebrow' }, [eyebrow]), el('h2', { class: 'serif' }, [title])];
+    if (hint) kids.push(el('span', { class: 'hint' }, [hint]));
+    return el('div', { class: 'section-head' }, kids);
+  }
+  function cardHead(label, hint) {
+    var kids = [el('span', null, [label])];
+    if (hint) kids.push(el('span', { class: 'hint' }, ['· ' + hint]));
+    return el('div', { class: 'cardhead' }, kids);
+  }
+
+  // ── productivity trend card ─────────────────────────────────────────────
+  function trendCard() {
+    var w = D.productivity.weekly || [];
+    var latest = w.length ? w[w.length - 1] : { actions: 0, outputs: 0 };
+    var prev = w.length > 1 ? w[w.length - 2] : latest;
+    var deltaPct = prev.actions ? Math.round(((latest.actions - prev.actions) / prev.actions) * 100) : 0;
+    var firstOut = w.length ? w[0].outputs : 0;
+    var peakOut = w.length ? Math.max.apply(null, w.map(function (d) { return d.outputs; })) : 0;
+    var head = el('div', { style: 'display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap' }, [
+      el('div', null, [
+        cardHead(D.productivity.metricLabel, 'Last ' + w.length + ' weeks'),
+        el('div', { style: 'display:flex;align-items:flex-end;gap:12px;margin-top:8px' }, [
+          el('span', { class: 'num', style: 'font-size:34px;line-height:1' }, [String(latest.actions)]),
+          el('span', { class: 'pill sage', style: 'margin-bottom:4px' }, [(deltaPct >= 0 ? '↑ ' : '↓ ') + Math.abs(deltaPct) + '% · vs last week']),
+        ]),
+      ]),
+      el('div', { style: 'margin-left:auto;text-align:right;font-size:12.5px;color:var(--ink-500)' }, [
+        el('div', null, ['Outputs shipped']),
+        el('div', { class: 'num', style: 'font-size:18px;margin-top:2px' }, [firstOut + ' → ' + peakOut + '/wk']),
+      ]),
+    ]);
+    var legend = el('div', { class: 'legend-row' }, [
+      el('span', null, [el('span', { class: 'swatch', style: 'background:var(--coral-600)' }, []), 'Agent actions / week']),
+      el('span', null, ['Dashed marks = milestones']),
+    ]);
+    return el('div', { class: 'card trend' }, [head, areaChart(w), legend]);
+  }
+
+  function costCard() {
+    var delta = D.cost.deltaPct;
+    var pill = el('span', { class: 'pill sage', style: 'margin-bottom:4px' }, [(delta <= 0 ? '↓ ' : '↑ ') + Math.abs(delta) + '% · vs yesterday']);
+    var top = el('div', { style: 'display:flex;align-items:flex-end;gap:14px;margin-top:8px;flex-wrap:wrap' }, [
+      el('span', { class: 'num', style: 'font-size:36px;line-height:1' }, ['$' + D.cost.today]), pill,
+    ]);
+    var spark = el('div', { style: 'margin-top:12px' }, [sparkline(D.cost.series, 280, 44)]);
+    var week = el('div', { class: 'weekrow' }, DAYS.map(function (d) { return el('span', null, [d]); }));
+    return el('div', { class: 'card' }, [cardHead('Cost · last 7 days'), top, spark, week]);
+  }
+
+  function actionsCard() {
+    var legendRows = D.actions.byAgent.map(function (a) {
+      return el('div', { class: 'row' }, [
+        el('span', { class: 'swatch', style: 'background:' + (TONE[a.tone] || 'var(--coral-600)') }, []),
+        el('span', { class: 'name' }, [a.name]),
+        el('span', { class: 'val' }, [String(a.count)]),
+      ]);
+    });
+    var body = el('div', { style: 'display:flex;align-items:center;gap:14px;margin-top:10px;flex-wrap:wrap' }, [
+      el('span', { class: 'num', style: 'font-size:36px;line-height:1' }, [String(D.actions.total)]),
+      donut(D.actions.byAgent, 56),
+      el('div', { class: 'legend' }, legendRows),
+    ]);
+    return el('div', { class: 'card' }, [cardHead('Actions · last 7 days', 'By agent'), body]);
+  }
+
+  function guardrailCard() {
+    var hasEvents = (D.guardrail.events || []).length > 0;
+    var wiredClean = D.guardrail.wired && !hasEvents;
+    var title, sub;
+    if (hasEvents) {
+      title = D.guardrail.events.length + ' guardrail event' + (D.guardrail.events.length === 1 ? '' : 's');
+      sub = 'Review what your policies caught this week.';
+    } else if (wiredClean) {
+      title = 'All clean — no guardrail events.';
+      sub = 'Your default policies are catching what they should.';
+    } else {
+      title = 'All clean so far.';
+      sub = 'Guardrail telemetry wiring in progress for beta.';
+    }
+    var calm = el('div', { class: 'calm' }, [
+      el('span', { class: 'ico' }, [icon('shield', 18)]),
+      el('div', null, [el('div', { class: 't' }, [title]), el('div', { class: 's' }, [sub])]),
+    ]);
+    return el('div', { class: 'card' }, [cardHead('Guardrail events', 'Last 7 days'), calm]);
+  }
+
+  function stat(label, value, foot) {
+    var kids = [el('div', { class: 'l' }, [label]), el('div', { class: 'v' }, [value])];
+    if (foot) kids.push(el('div', { class: 'f' }, [foot]));
+    return el('div', { class: 'stat' }, kids);
+  }
+
+  function perfCard() {
+    var p = D.perf;
+    var deltaTxt = (p.avgSessionDeltaMin == null) ? '' :
+      (p.avgSessionDeltaMin <= 0 ? '↓ ' : '↑ ') + Math.abs(p.avgSessionDeltaMin) + 'm vs last week';
+    var grid = el('div', { class: 'perfgrid' }, [
+      stat('Success rate', pct(p.successRate), p.runs.successful + ' / ' + p.runs.total + ' runs'),
+      stat('Avg session length', p.avgSessionMin + 'm', deltaTxt),
+      stat('Outputs shipped', String(p.outputsShipped), 'this week'),
+    ]);
+    return el('div', { class: 'card' }, [cardHead('Performance', 'Last 7 days'), grid]);
+  }
+
+  function bragCard() {
+    var b = D.brag;
+    var sentence = el('p', null, [
+      'Across ', el('strong', null, [b.sessions + ' session' + (b.sessions === 1 ? '' : 's')]),
+      ', your agents called ', el('strong', null, [b.toolsCalled + ' tools']),
+      ', read ', el('strong', null, [b.filesRead + ' files']),
+      ', and used ', el('strong', null, [b.tokens + ' tokens']),
+      ' on ', el('span', { class: 'mono', style: 'font-size:14px' }, [b.model]), '.',
+      b.guardrailEvents === 0 ? el('span', { class: 'clean' }, [' Zero guardrail events.']) : (' ' + b.guardrailEvents + ' guardrail events.'),
+    ]);
+    var kicker = el('div', { class: 'kicker' }, [el('span', { style: 'color:var(--clay-700)' }, [icon('sparkle', 16)]), el('span', { class: 'eyebrow' }, ['Brag stat · this week'])]);
+    var foot = el('div', { class: 'foot' }, ['Summarized from your own sessions this week.']);
+    return el('div', { class: 'card brag' }, [kicker, sentence, foot]);
+  }
+
+  function recentCard() {
+    var head = el('div', { style: 'display:flex;align-items:center;gap:12px' }, [
+      cardHead('Recent activity', 'Last 5 outputs'),
+      el('div', { class: 'filters' }, [el('span', { class: 'pill sm' }, ['All agents']), el('span', { class: 'pill sm' }, ['This week'])]),
+    ]);
+    var thead = el('thead', null, [el('tr', null, [
+      el('th', { style: 'width:150px' }, ['When']), el('th', null, ['Target']),
+      el('th', null, ['Output']), el('th', { class: 'r', style: 'width:100px' }, ['Run time']), el('th', { style: 'width:40px' }, ['']),
+    ])]);
+    var rows = D.runs.map(function (r) {
+      return el('tr', null, [
+        el('td', { class: 'when' }, [whenLabel(r.ts)]),
+        el('td', { class: 'target' }, [r.target]),
+        el('td', { class: 'out' }, [el('a', null, [icon('doc', 14), r.outputFile])]),
+        el('td', { class: 'dur r' }, [runTime(r.runTimeSec)]),
+        el('td', { class: 'chev' }, [icon('chevron', 16)]),
+      ]);
+    });
+    return el('div', { class: 'card' }, [head, el('table', { class: 'tbl' }, [thead, el('tbody', null, rows)])]);
+  }
+
+  // ── priorities (the closure loop: brew opens it, wrap-up closes it) ─────
+  function prioritiesCard() {
+    var p = D.priorities || { set: 0, closed: 0, carried: 0 };
+    var pctClosed = p.set ? Math.round((p.closed / p.set) * 100) : 0;
+    var top = el('div', { style: 'display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap' }, [
+      el('span', { class: 'num', style: 'font-size:32px;line-height:1' }, [p.closed + ' / ' + p.set]),
+      el('span', { class: 'pill sage', style: 'margin-bottom:4px' }, [pctClosed + '% closed']),
+      el('span', { style: 'margin-left:auto;font-size:12.5px;color:var(--ink-500)' }, [p.carried + ' carried over']),
+    ]);
+    var bar = el('div', { style: 'height:8px;border-radius:999px;background:var(--cream-300);overflow:hidden;margin-top:12px' }, [
+      el('div', { style: 'height:100%;width:' + pctClosed + '%;background:var(--coral-600);border-radius:999px' }, []),
+    ]);
+    var caption = el('div', { style: 'font-size:12px;color:var(--ink-500);margin-top:8px' }, ['Priorities closed this week — the loop daily-brew opens and wrap-up closes.']);
+    return el('div', { class: 'card' }, [cardHead('Priorities', 'This week · from your sessions'), top, bar, caption]);
+  }
+
+  // ── assemble ──────────────────────────────────────────────────────────
+  function render() {
+    document.getElementById('topbar').appendChild(topbar());
+    var content = document.getElementById('content');
+    [
+      welcome(),
+      el('div', { class: 'section' }, [
+        sectionHead('01 · Productivity', 'You’re delegating more to your agents each week.'),
+        prioritiesCard(),
+        trendCard(),
+      ]),
+      el('div', { class: 'section' }, [
+        sectionHead('02 · Spend & activity', 'What your agents did and what it cost.', 'From your sessions'),
+        el('div', { class: 'grid-3' }, [costCard(), actionsCard(), guardrailCard()]),
+      ]),
+      el('div', { class: 'section' }, [
+        sectionHead('03 · Performance', 'How it’s going.'),
+        el('div', { class: 'grid-1-2' }, [perfCard(), bragCard()]),
+      ]),
+      el('div', { class: 'section' }, [
+        sectionHead('04 · Highlights & recent', 'The last five things you shipped.', 'Click any to re-open'),
+        recentCard(),
+      ]),
+    ].forEach(function (node) { content.appendChild(node); });
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
