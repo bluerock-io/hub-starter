@@ -24,7 +24,7 @@ Two pieces work together — you need both:
 
 1. **Install the plugin** in Claude Code:
    ```
-   /plugin marketplace add lvn-bluerock/claude-plugins
+   /plugin marketplace add bluerock-io/claude-plugins
    /plugin install bluerock@bluerock
    ```
 2. **Clone this scaffold.** Click **"Use this template" → "Create a new
