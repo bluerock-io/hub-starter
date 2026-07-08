@@ -1,27 +1,27 @@
-# Builders Dashboard — data contract (what `/wrap-up` must emit)
+# Builders Dashboard — data contract (what `/bluerock:wrap-up` must emit)
 
 > Derived from `design/dashboard-mockup.png` (the approved BlueRock Dashboard mockup).
 > Beta has **no BR OTEL/sensor data** — every value below is sourced from files the
-> starter project's `/wrap-up` skill emits about Linda's own builder activity.
+> starter project's `/bluerock:wrap-up` skill emits about Linda's own builder activity.
 > **Label decision (Linda, 2026-06-17):** "Sensor-sourced" is **softened** to honest
-> framing ("From your sessions") since beta data is `/wrap-up`, not OTEL. The renderer
+> framing ("From your sessions") since beta data is `/bluerock:wrap-up`, not OTEL. The renderer
 > ships with this softened wording.
 
 ## Delivery model (Linda, 2026-06-17)
 The dashboard is **not** a Next.js route. It is a **design stored in the starter Cursor
 project** that renders as a **local HTML page** — no server. The starter project's
-`/wrap-up` skill regenerates the data file from the builder's own session activity, and
+`/bluerock:wrap-up` skill regenerates the data file from the builder's own session activity, and
 the renderer reads it. This workaround is sufficient for beta.
 
 - `design/dashboard.html` — self-contained renderer (cool-paper, opens via `file://`).
-- `design/dashboard-data.js` — the data file `/wrap-up` **overwrites**; sets
+- `design/dashboard-data.js` — the data file `/bluerock:wrap-up` **overwrites**; sets
   `window.__BR_DASH__` and is loaded by `<script src>` so it works without a server
   (a `fetch()` of a local JSON is blocked over `file://`; a `<script src>` is not).
 - The existing `app/dashboard/` React scaffold is the **design reference** these were
   ported from; it is left untouched.
 
 ## Source of truth
-`/wrap-up` (runs in the **starter project**, not marketing-hub) writes the per-run atoms
+`/bluerock:wrap-up` (runs in the **starter project**, not marketing-hub) writes the per-run atoms
 (`runs[]`, below) **and** the pre-rolled sections (cost / actions / perf / brag) computed
 from those atoms at wrap-up time. The renderer just paints — it does not re-aggregate.
 Prefer **structured/typed** output over a prose blob (Linda's standing analytics-preempt
@@ -48,10 +48,11 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 - outputs-shipped count over a **reliable window** ("You've shipped N outputs this week" — counted from `runs[]`, not a last-visit anchor). Zero/unknown → greeting only, **no fabricated count**.
 - curriculum resume pointer (current chapter # + title)
 
-### 01 · Spend & activity ("What your agents did and what it cost")
-- **Cost · 7d:** today's cost ($1.84), Δ% vs prior, 7-pt daily series (Sun→Today) for the sparkline
-- **Actions · 7d by agent:** total (142) + per-agent breakdown `[{agent, count}]` (Researcher 64, Signal Scanner 47, Composer 31) → donut
-- **Guardrail events · 7d:** `{ wired, events: [{ts, action, rule, outcome, target, source, severity}] }`.
+### 01 · Activity & spend ("What your agents did and what it cost")
+Layout: the **Actions card leads** (wider); the **Cost card is second**. The Guardrail card is **dropped from the beta layout** (see below).
+- **Actions · 7d by agent & team:** `{ total, byAgent: [{name, count, tone, timeMin, members?}] }`. Renders as one **horizontal bar per agent/team** (bar length = `count`, as a share of the busiest) plus the time, above a summary (total actions · total time). `name` is required (labels the row); `count` = action total; `tone` = a stable palette key (`coral` · `plum` · `composer` · `sage`; falls back to coral); `timeMin` = wall-clock minutes this week (honestly sourceable from transcript timestamps — unlike tokens/cost). A **team** entry (e.g. Account Research) carries `members: [{name, count, timeMin}]` (members sum to the team's `count` and `timeMin`); the card expands the team into its member agents, so the builder sees both team and individual activity.
+- **Cost · 7d:** today's cost ($1.84), Δ% vs prior, 7-pt daily series (Sun→Today) for the sparkline.
+- **Guardrail events · 7d** — data field retained; **card dropped from the beta layout** (no sensor data yet; re-add when wired): `{ wired, events: [{ts, action, rule, outcome, target, source, severity}] }`.
   - `wired:false` (beta default) → honest **"All clean so far · telemetry wiring in progress"**.
   - `wired:true` + empty `events` → substantiated **"All clean — no guardrail events."**
   - `events` non-empty → loud state with the count.
@@ -59,29 +60,30 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 
 ### 02 · Performance ("How it's going")
 Honest set only — everything here is derivable from the skills at beta (no sensors). Dropped from the original mockup: **output quality / reader rating** (no signal — would be a net-new rating capture) and **cache hit rate** (operator metric, not a builder outcome; surface the benefit as cost instead).
-- `perf.successRate` + `runs {successful, total}` — run = a logged agent run; success = completed without error/guardrail block. The `success` flag is set by `/wrap-up` (a model judgment at beta, not a sensor signal).
+- `perf.successRate` + `runs {successful, total}` — run = a logged agent run; success = completed without error/guardrail block. The `success` flag is set by `/bluerock:wrap-up` (a model judgment at beta, not a sensor signal).
 - `perf.avgSessionMin` + `perf.avgSessionDeltaMin` — **avg session length** (from `session-metrics.py`), neutral WoW delta (shorter is not "better").
 - `perf.outputsShipped` — count of outputs this week from `runs[]`.
 - **Brag stat (this week):** sessions count, tools called, files read, tokens, model name, guardrail-event count → templated sentence.
 
 ### 03 · Highlights & recent ("The last five things you shipped")
-- last N run records: `{ts, target, outputFile, runTime, agent}` (filterable: All agents / This week)
+- last N run records: `{ts, agent, target, outputFile, runTime}` (filterable: All agents / This week)
+- `agent` renders as a named column (tone-matched to the Actions donut) so the builder can see which agent or team shipped each output. Multi-agent runs are attributed to the **team** the builder invoked (e.g. a `/bluerock:research` run → "Account Research"), not the trailing sub-agent.
 
 ### Productivity trend (lead chart)
 - `productivity: { metricLabel, weekly: [{ week, actions, outputs, milestone? }] }`
 - Headline series = **`actions` per week** (agent actions = proxy for work delegated; the
   rising curve). `outputs` = things shipped that week (shown as "first → latest /wk").
 - `milestone` annotates a week, rendered as a dashed reference line (Hub AreaChart style).
-- Rolled up by `/wrap-up` from the per-run atoms, bucketed by ISO week.
+- Rolled up by `/bluerock:wrap-up` from the per-run atoms, bucketed by ISO week.
 
 ### Priorities (closure loop — plugin v0.2)
-- `priorities: { set, closed, carried }` for the week. Counted by `/wrap-up` from `today.md`:
+- `priorities: { set, closed, carried }` for the week. Counted by `/bluerock:wrap-up` from `today.md`:
   `set` = total Focus items, `closed` = `[x]`, `carried` = `[>]`. `daily-brew` seeds `today.md`
   each morning and opens by closing yesterday's loop; `/bluerock:today` keeps it current.
 - Rendered as the lead card of **01 · Productivity** ("N / M closed," % bar, carried count).
 - "From your sessions," not sensors — the clearest builder-facing "this is working" stat.
 
-## Implied per-run record shape (the atom `/wrap-up` should log)
+## Implied per-run record shape (the atom `/bluerock:wrap-up` should log)
 ```
 { ts, sessionId, agent, target, outputFile, runTimeSec, success,
   tokens, toolsCalled, filesRead, model, costUsd,
@@ -93,7 +95,7 @@ the dashboard build is mostly rendering once it's pinned.
 ## Guardrail-event capture & schema (research finding, 2026-06-17)
 
 Probed: *when BR blocks an action at the container level, can the Claude Code session see it,
-and can a hook capture it for `/wrap-up`?*
+and can a hook capture it for `/bluerock:wrap-up`?*
 
 **Observable? — PARTIAL.** A container-level block is invisible to Claude Code's own
 permission hooks (Claude Code thinks it allowed the tool). It surfaces **only if BR's

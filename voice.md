@@ -1,7 +1,7 @@
 # voice.md — how I write
 
 > Your style guide. Every content skill (meeting-recap, drafting, posts) reads
-> this so its output sounds like *you*, not generic AI. `/onboard` fills this in
+> this so its output sounds like *you*, not generic AI. `/bluerock:onboard` fills this in
 > from your writing samples — or fill it yourself. See `examples/voice.example.md`
 > for what a good one looks like.
 

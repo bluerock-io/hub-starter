@@ -3,7 +3,7 @@ EXAMPLE — a filled-in voice.md, so you can see what "good" looks like.
 
 This is a sample voice guide for the same fictional RevOps lead. The point is to
 be specific enough that an agent writing in your voice gets it right the first
-time. /onboard drafts this from your writing samples; sharpen the quotes and the
+time. /bluerock:onboard drafts this from your writing samples; sharpen the quotes and the
 "avoid" list — those carry the most signal.
 -->
 # voice.md — how Maya writes

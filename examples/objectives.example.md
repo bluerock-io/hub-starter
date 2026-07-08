@@ -3,7 +3,7 @@ EXAMPLE — a filled-in objectives.md, so you can see what "good" looks like.
 
 This is a sample for the same fictional RevOps lead. daily-brew reads your
 objectives to decide what counts as "focus" — so rank them, make them specific,
-and park what you're not doing. /onboard drafts this; you keep it current.
+and park what you're not doing. /bluerock:onboard drafts this; you keep it current.
 -->
 # objectives.md — what Maya is working on
 

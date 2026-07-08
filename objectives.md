@@ -2,7 +2,7 @@
 
 > Your current projects, goals, and recurring priorities, ranked. This isn't
 > filler: `daily-brew` reads it to decide what counts as "focus" vs. noise, so
-> the sharper it is, the sharper every morning brief. `/onboard` fills this in —
+> the sharper it is, the sharper every morning brief. `/bluerock:onboard` fills this in —
 > or fill it yourself. See `examples/objectives.example.md` for a good one.
 
 ## This quarter

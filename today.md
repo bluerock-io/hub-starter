@@ -8,6 +8,6 @@
 
 <!--
 This is your living priorities list. daily-brew seeds it each morning;
-/today keeps it current through the day; wrap-up tallies what closed.
+/bluerock:today keeps it current through the day; wrap-up tallies what closed.
 State markers: [ ] open · [x] done · [>] carried from a prior day.
 -->

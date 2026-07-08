@@ -161,6 +161,8 @@ h1, h2, h3, .serif {
 .cardhead .hint { font-size: 11px; color: var(--ink-500); font-family: var(--font-mono); letter-spacing: .02em; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 .grid-1-2 { display: grid; grid-template-columns: 1fr 1.6fr; gap: 16px; }
+.grid-actions { display: grid; grid-template-columns: 1.7fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .grid-actions { grid-template-columns: 1fr; } }
 .weekrow { margin-top: 8px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--ink-500); }
 
 /* Trend chart card */
@@ -169,12 +171,17 @@ h1, h2, h3, .serif {
 .trend .legend-row { display: flex; gap: 22px; justify-content: center; margin-top: 10px; font-size: 12px; color: var(--ink-500); }
 .trend .legend-row .swatch { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
 
-/* Actions legend */
-.legend { display: flex; flex-direction: column; gap: 5px; font-size: 11.5px; flex: 1; min-width: 0; }
-.legend .row { display: flex; align-items: center; gap: 6px; }
-.legend .swatch { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-.legend .name { color: var(--ink-700); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.legend .val { color: var(--ink-500); margin-left: auto; font-family: var(--font-mono); }
+/* Actions breakdown — one horizontal bar per agent/team, members indented */
+.abreak { display: flex; flex-direction: column; gap: 9px; margin-top: 16px; }
+.abreak .arow { display: flex; align-items: center; gap: 10px; font-size: 12.5px; }
+.abreak .arow .sw { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.abreak .arow .nm { width: 134px; flex-shrink: 0; color: var(--ink-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.abreak .arow .track { flex: 1; min-width: 40px; height: 8px; background: var(--cream-300); border-radius: var(--r-pill); overflow: hidden; }
+.abreak .arow .fill { height: 100%; border-radius: var(--r-pill); }
+.abreak .arow .ct { width: 30px; text-align: right; font-family: var(--font-mono); color: var(--ink-900); font-variant-numeric: tabular-nums; }
+.abreak .arow .tm { width: 54px; text-align: right; font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-500); }
+.abreak .arow.member .nm { color: var(--ink-500); font-size: 11.5px; }
+.abreak .arow.member .ct { color: var(--ink-600); }
 
 /* Guardrail calm state */
 .calm {
@@ -208,6 +215,7 @@ h1, h2, h3, .serif {
 .tbl tbody tr { border-top: 1px solid var(--border); font-size: 13.5px; }
 .tbl td { padding: 12px; }
 .tbl td.when { color: var(--ink-500); font-family: var(--font-mono); font-size: 11.5px; }
+.tbl td.agent { white-space: nowrap; }
 .tbl td.target { color: var(--ink-900); font-weight: 500; }
 .tbl td.out a { color: var(--ink-700); text-decoration: underline; text-decoration-color: var(--cream-300); text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px; }
 .tbl td.dur { font-family: var(--font-mono); font-size: 12px; color: var(--ink-700); }
@@ -292,23 +300,6 @@ h1, h2, h3, .serif {
     var s = svgNS('svg', { width: w, height: h }); s.style.display = 'block';
     s.appendChild(svgNS('path', { d: area, fill: 'var(--coral-100)', opacity: '0.6' }));
     s.appendChild(svgNS('path', { d: d, stroke: 'var(--coral-600)', 'stroke-width': '1.6', fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
-    return s;
-  }
-  function donut(slices, size) {
-    size = size || 56;
-    var total = slices.reduce(function (a, b) { return a + b.count; }, 0) || 1;
-    var r = size / 2 - 6, c = size / 2, acc = 0;
-    var s = svgNS('svg', { width: size, height: size });
-    s.appendChild(svgNS('circle', { cx: c, cy: c, r: r, fill: 'none', stroke: 'var(--cream-300)', 'stroke-width': '7' }));
-    slices.forEach(function (sl) {
-      var frac = sl.count / total, dash = 2 * Math.PI * r;
-      s.appendChild(svgNS('circle', {
-        cx: c, cy: c, r: r, fill: 'none', stroke: TONE[sl.tone] || 'var(--coral-600)',
-        'stroke-width': '7', 'stroke-dasharray': (dash * frac) + ' ' + dash,
-        'stroke-dashoffset': -(dash * acc), transform: 'rotate(-90 ' + c + ' ' + c + ')',
-      }));
-      acc += frac;
-    });
     return s;
   }
 
@@ -468,20 +459,37 @@ h1, h2, h3, .serif {
     return el('div', { class: 'card' }, [cardHead('Cost · last 7 days'), top, spark, week]);
   }
 
+  function fmtMin(m) {
+    if (!m) return '0m';
+    return m < 60 ? m + 'm' : Math.floor(m / 60) + 'h ' + (m % 60) + 'm';
+  }
   function actionsCard() {
-    var legendRows = D.actions.byAgent.map(function (a) {
-      return el('div', { class: 'row' }, [
-        el('span', { class: 'swatch', style: 'background:' + (TONE[a.tone] || 'var(--coral-600)') }, []),
-        el('span', { class: 'name' }, [a.name]),
-        el('span', { class: 'val' }, [String(a.count)]),
+    var list = D.actions.byAgent || [];
+    var maxCount = Math.max.apply(null, list.map(function (a) { return a.count; }).concat([1]));
+    var totalMin = list.reduce(function (s, a) { return s + (a.timeMin || 0); }, 0);
+    // One horizontal bar per agent/team (bar length = actions, share of the
+    // busiest); a team expands into indented member bars. Each row also shows
+    // time, so the builder sees volume AND where the wall-clock went.
+    function barRow(name, count, timeMin, tone, isMember) {
+      var fill = el('div', { class: 'fill', style: 'width:' + Math.round((count / maxCount) * 100) + '%;background:' + (TONE[tone] || 'var(--coral-600)') + (isMember ? ';opacity:.5' : '') }, []);
+      return el('div', { class: 'arow' + (isMember ? ' member' : '') }, [
+        el('span', { class: 'sw', style: isMember ? 'visibility:hidden' : 'background:' + (TONE[tone] || 'var(--coral-600)') }, []),
+        el('span', { class: 'nm' }, [isMember ? '└ ' + name : name]),
+        el('div', { class: 'track' }, [fill]),
+        el('span', { class: 'ct' }, [String(count)]),
+        el('span', { class: 'tm' }, [fmtMin(timeMin)]),
       ]);
+    }
+    var rows = [];
+    list.forEach(function (a) {
+      rows.push(barRow(a.name, a.count, a.timeMin, a.tone, false));
+      (a.members || []).forEach(function (m) { rows.push(barRow(m.name, m.count, m.timeMin, a.tone, true)); });
     });
-    var body = el('div', { style: 'display:flex;align-items:center;gap:14px;margin-top:10px;flex-wrap:wrap' }, [
-      el('span', { class: 'num', style: 'font-size:36px;line-height:1' }, [String(D.actions.total)]),
-      donut(D.actions.byAgent, 56),
-      el('div', { class: 'legend' }, legendRows),
+    var summary = el('div', { style: 'display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;margin-top:4px' }, [
+      el('span', { class: 'num', style: 'font-size:34px;line-height:1' }, [String(D.actions.total)]),
+      el('span', { style: 'font-size:13px;color:var(--ink-500);margin-bottom:3px' }, ['actions · ' + fmtMin(totalMin) + ' across your agents this week']),
     ]);
-    return el('div', { class: 'card' }, [cardHead('Actions · last 7 days', 'By agent'), body]);
+    return el('div', { class: 'card' }, [cardHead('Actions · last 7 days', 'By agent & team'), summary, el('div', { class: 'abreak' }, rows)]);
   }
 
   function guardrailCard() {
@@ -544,12 +552,20 @@ h1, h2, h3, .serif {
       el('div', { class: 'filters' }, [el('span', { class: 'pill sm' }, ['All agents']), el('span', { class: 'pill sm' }, ['This week'])]),
     ]);
     var thead = el('thead', null, [el('tr', null, [
-      el('th', { style: 'width:150px' }, ['When']), el('th', null, ['Target']),
+      el('th', { style: 'width:140px' }, ['When']), el('th', { style: 'width:160px' }, ['Agent']), el('th', null, ['Target']),
       el('th', null, ['Output']), el('th', { class: 'r', style: 'width:100px' }, ['Run time']), el('th', { style: 'width:40px' }, ['']),
     ])]);
+    // Tone per agent name, reused from the Actions card so the same agent/team
+    // reads the same color in both places. Falls back to a neutral dot if unmapped.
+    var agentTone = {};
+    (D.actions.byAgent || []).forEach(function (a) { agentTone[a.name] = a.tone; });
     var rows = D.runs.map(function (r) {
       return el('tr', null, [
         el('td', { class: 'when' }, [whenLabel(r.ts)]),
+        el('td', { class: 'agent' }, [el('span', { class: 'pill sm' }, [
+          el('span', { class: 'dot', style: 'background:' + (TONE[agentTone[r.agent]] || 'var(--ink-400)') }, []),
+          r.agent,
+        ])]),
         el('td', { class: 'target' }, [r.target]),
         el('td', { class: 'out' }, [el('a', null, [icon('doc', 14), r.outputFile])]),
         el('td', { class: 'dur r' }, [runTime(r.runTimeSec)]),
@@ -587,8 +603,10 @@ h1, h2, h3, .serif {
         trendCard(),
       ]),
       el('div', { class: 'section' }, [
-        sectionHead('02 · Spend & activity', 'What your agents did and what it cost.', 'From your sessions'),
-        el('div', { class: 'grid-3' }, [costCard(), actionsCard(), guardrailCard()]),
+        sectionHead('02 · Activity & spend', 'What your agents did and what it cost.', 'From your sessions'),
+        // Lead with the Actions card (wider); Cost second. Guardrail card dropped
+        // for beta (no sensor data yet); guardrailCard() kept for when it's wired.
+        el('div', { class: 'grid-actions' }, [actionsCard(), costCard()]),
       ]),
       el('div', { class: 'section' }, [
         sectionHead('03 · Performance', 'How it’s going.'),

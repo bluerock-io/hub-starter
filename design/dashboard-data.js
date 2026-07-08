@@ -24,7 +24,7 @@ window.__BR_DASH__ = {
     uptimeLabel: 'online · 16 days',
     trialDaysLeft: 11,
     outputsSince: { count: 3, since: 'this week' }, // single user; window = this week from runs[], not a last-visit anchor
-    resume: { chapter: 3, title: 'Save to GitHub' },
+    resume: { chapter: 3, title: 'Skills as Playbooks' },
   },
 
   // ── Productivity trend (weekly) ───────────────────────────────────────
@@ -54,13 +54,29 @@ window.__BR_DASH__ = {
     series: [2.1, 2.4, 2.9, 2.2, 1.9, 2.1, 1.84],
   },
 
-  // Actions · 7d by agent → donut + total.
+  // Actions · 7d by agent → donut + total. Names the rhythm agents that fire
+  // most (scribe files notes all day; daily-brew runs each morning) and the
+  // Account Research team (researcher + signal-scanner + composer, counted as
+  // one team) when a /bluerock:research run happens — so the builder can see
+  // which agents and teams are active. Use the SAME label in runs[] so a team
+  // reads consistently across the donut and the recent-activity table.
+  // `total` must equal Σ byAgent counts; tones are stable per name. `timeMin` =
+  // wall-clock minutes for that agent/team this week (honestly sourceable from
+  // transcript timestamps). The card renders one bar per agent/team (length =
+  // actions) plus the time. A team carries `members: [{name, count, timeMin}]`
+  // (members sum to the team's count and timeMin); the card expands the team
+  // into its members, so the builder sees both team and individual activity.
   actions: {
     total: 142,
     byAgent: [
-      { name: 'Researcher', count: 64, tone: 'coral' },
-      { name: 'Signal Scanner', count: 47, tone: 'plum' },
-      { name: 'Composer', count: 31, tone: 'composer' },
+      { name: 'scribe', count: 54, tone: 'coral', timeMin: 18 },
+      { name: 'daily-brew', count: 36, tone: 'plum', timeMin: 14 },
+      { name: 'Account Research', count: 33, tone: 'composer', timeMin: 24, members: [
+        { name: 'researcher', count: 15, timeMin: 11 },
+        { name: 'signal-scanner', count: 11, timeMin: 8 },
+        { name: 'composer', count: 7, timeMin: 5 },
+      ] },
+      { name: 'meeting-prep', count: 19, tone: 'sage', timeMin: 9 },
     ],
   },
 
@@ -79,17 +95,17 @@ window.__BR_DASH__ = {
     runs: { successful: 56, total: 60 },  // run = a logged agent run; success = completed w/o error/guardrail block (set by /wrap-up)
     avgSessionMin: 24,                    // avg session length this week (from session-metrics.py)
     avgSessionDeltaMin: -3,               // vs last week (neutral — not better/worse)
-    outputsShipped: 9,                    // this week, counted from runs[]
+    outputsShipped: 3,                    // this week, counted from runs[] — same source/window as meta.outputsSince.count (keep them equal)
   },
 
   // Brag stat (this week). Mockup wording: sessions + tools + files + tokens
   // + model + guardrail-event count → one templated sentence.
   brag: {
-    sessions: 1,
-    toolsCalled: 47,
-    filesRead: 23,
-    tokens: '47K',
-    model: 'claude-sonnet-4.6',
+    sessions: 5,
+    toolsCalled: 142,  // = actions.total (the week's agent actions)
+    filesRead: 71,
+    tokens: '210K',
+    model: 'claude-sonnet-4-6',
     guardrailEvents: 0,
   },
 
@@ -99,13 +115,21 @@ window.__BR_DASH__ = {
   priorities: { set: 12, closed: 9, carried: 2 },
 
   // ── 03 · Highlights & recent ──────────────────────────────────────────
-  // Last N run atoms. The renderer shows ts / target / outputFile / runTime.
-  // Full atom shape kept here so the file IS the source `/wrap-up` rolls up.
+  // Last N run atoms — "the last things you shipped." A real rhythm week:
+  // research dossiers (the multi-agent Account Research run), the daily-brew
+  // morning brief, meeting prep, and a recap — not only account research.
+  // `agent` = the agent, team, or skill that produced the output — named so the
+  // builder can see who's shipping (a /bluerock:research run is attributed to the
+  // "Account Research" team, the label the builder invoked; rhythm outputs to
+  // their agent/skill). The 3 most recent are dated this week, matching
+  // perf.outputsShipped / meta.outputsSince.count = 3; the older 2 fill "last 5."
+  // The renderer shows ts / agent / target / outputFile / runTime; full atom
+  // shape kept here so the file IS the source `/wrap-up` rolls up.
   runs: [
-    { ts: '2026-05-18T09:41:00Z', sessionId: 's-0418', agent: 'Researcher',     target: 'Northstar Analytics', outputFile: 'northstar-analytics.pdf', runTimeSec: 41,  success: true, tokens: 6200, toolsCalled: 9,  filesRead: 4, model: 'claude-sonnet-4.6', costUsd: 0.31, guardrailEvents: [] },
-    { ts: '2026-05-17T16:08:00Z', sessionId: 's-0417b', agent: 'Composer',      target: 'Mercury Goods',       outputFile: 'mercury-goods.pdf',       runTimeSec: 52,  success: true, tokens: 7100, toolsCalled: 11, filesRead: 5, model: 'claude-sonnet-4.6', costUsd: 0.36, guardrailEvents: [] },
-    { ts: '2026-05-17T10:22:00Z', sessionId: 's-0417a', agent: 'Researcher',    target: 'Foundry HQ',          outputFile: 'foundry-hq.pdf',          runTimeSec: 36,  success: true, tokens: 5400, toolsCalled: 8,  filesRead: 3, model: 'claude-sonnet-4.6', costUsd: 0.27, guardrailEvents: [] },
-    { ts: '2026-05-15T14:55:00Z', sessionId: 's-0415', agent: 'Signal Scanner', target: 'Stitch Health',       outputFile: 'stitch-health.pdf',       runTimeSec: 62,  success: true, tokens: 8300, toolsCalled: 12, filesRead: 6, model: 'claude-sonnet-4.6', costUsd: 0.42, guardrailEvents: [] },
-    { ts: '2026-05-14T11:30:00Z', sessionId: 's-0414', agent: 'Researcher',     target: 'Lattice Robotics',    outputFile: 'lattice-robotics.pdf',    runTimeSec: 44,  success: true, tokens: 5900, toolsCalled: 9,  filesRead: 4, model: 'claude-sonnet-4.6', costUsd: 0.30, guardrailEvents: [] },
+    { ts: '2026-06-09T15:20:00Z', sessionId: 's-0609b',  agent: 'Account Research', target: 'Northstar Analytics',   outputFile: 'northstar-analytics-dossier.md', runTimeSec: 156, success: true, tokens: 18400, toolsCalled: 24, filesRead: 8, model: 'claude-sonnet-4-6', costUsd: 0.62, guardrailEvents: [] },
+    { ts: '2026-06-08T13:30:00Z', sessionId: 's-0608a',  agent: 'meeting-prep',     target: 'Foundry HQ intro call', outputFile: 'foundry-hq-prep.md',           runTimeSec: 41,  success: true, tokens: 4100,  toolsCalled: 6,  filesRead: 5, model: 'claude-sonnet-4-6', costUsd: 0.16, guardrailEvents: [] },
+    { ts: '2026-06-08T10:15:00Z', sessionId: 's-0608b',  agent: 'Account Research', target: 'Stitch Health',         outputFile: 'stitch-health-dossier.md',       runTimeSec: 148, success: true, tokens: 17200, toolsCalled: 22, filesRead: 7, model: 'claude-sonnet-4-6', costUsd: 0.58, guardrailEvents: [] },
+    { ts: '2026-06-03T11:10:00Z', sessionId: 's-0603',   agent: 'meeting-recap', target: 'Mercury Goods discovery', outputFile: 'mercury-goods-recap.md',        runTimeSec: 44,  success: true, tokens: 4600,  toolsCalled: 7,  filesRead: 4, model: 'claude-sonnet-4-6', costUsd: 0.18, guardrailEvents: [] },
+    { ts: '2026-06-02T07:30:00Z', sessionId: 's-0602am', agent: 'daily-brew',    target: 'Morning brief',         outputFile: 'today.md',                       runTimeSec: 34,  success: true, tokens: 5200,  toolsCalled: 9,  filesRead: 6, model: 'claude-sonnet-4-6', costUsd: 0.21, guardrailEvents: [] },
   ],
 };

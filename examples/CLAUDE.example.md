@@ -2,7 +2,7 @@
 EXAMPLE — a filled-in CLAUDE.md, so you can see what "good" looks like.
 
 This is a sample standing brief for a fictional RevOps lead. Yours should be
-this specific — name real workstreams, real people, real preferences. /onboard
+this specific — name real workstreams, real people, real preferences. /bluerock:onboard
 writes a first draft from what you paste; then you sharpen it. Don't copy this
 persona; copy the level of detail.
 -->

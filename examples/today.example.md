@@ -2,7 +2,7 @@
 EXAMPLE — a filled-in today.md mid-day, so you can see what "good" looks like.
 
 daily-brew seeds Focus each morning; you check items off and add through the day
-with /today; wrap-up counts what closed. State markers: [ ] open · [x] done ·
+with /bluerock:today; wrap-up counts what closed. State markers: [ ] open · [x] done ·
 [>] carried from a prior day.
 -->
 # Today — 2026-06-26
