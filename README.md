@@ -6,7 +6,7 @@ and skills doing the job and writing it back as plain markdown you own, with a d
 of what they did. Unlike a chat window that starts fresh every time, the Hub is yours —
 real files you control, skills and agents you shape, a setup that grows with your work.
 
-It's the starting line for the [BlueRock for Builders](https://builders.bluerock.io/learn)
+It's the starting line for the [BlueRock for Builders](https://learn.bluerock.io)
 curriculum, which takes you from here to a Hub that runs parts of your day. Everything
 in this repo is yours to change — the course assumes you will.
 
