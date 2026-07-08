@@ -74,7 +74,7 @@ what you'd change.
 
 ## The curriculum
 
-Six modules at [builders.bluerock.io/learn](https://builders.bluerock.io/learn). Get
+Six modules at [learn.bluerock.io](https://learn.bluerock.io). Get
 Started is free; the six modules come with the beta:
 
 | # | Module | You leave with |
