@@ -52,6 +52,7 @@ panel — and `/bluerock:wrap-up` does them for you at the end of a session.
 | `voice.md` | Your style guide — every skill reads it so output sounds like you. |
 | `objectives.md` | Your ranked priorities — `daily-brew` reads them to decide your focus. |
 | `today.md` | Your living to-do for the day — `daily-brew` seeds it, `/bluerock:today` updates it, `/bluerock:wrap-up` tallies it. |
+| `your-toolkit.md` | Your browsable map of the skills and agents you have. Starts as a placeholder — say "what can I do" (`/bluerock:whats-installed`) and it fills in with your live toolkit, always current with your installed plugin. |
 | `notes/` | Where your notes live: `scribe` files them, `_TEMPLATE.md` is the shape, `sample-granola.md` is a fictional call to practice on. |
 | `examples/` | Filled-in "what good looks like" profiles (`CLAUDE.example.md`, `voice.example.md`, …) to model your own files on. |
 | `design/dashboard.html` | Your build dashboard. Open it in a browser; `/bluerock:wrap-up` refreshes it from your sessions. |
