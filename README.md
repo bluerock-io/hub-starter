@@ -27,11 +27,9 @@ there when you'd rather be explicit.
 
 ## Quickstart
 
-1. **Install the plugin** in Claude Code (the panel inside Cursor):
-   ```
-   /plugin marketplace add bluerock-io/claude-plugins
-   /plugin install bluerock@bluerock
-   ```
+1. **Install the plugin.** In the Claude Code panel, type `/plugins` (plural) to open the
+   plugin manager → **Marketplaces** tab, add `bluerock-io/claude-plugins` → **Plugins** tab,
+   install **bluerock** ("Install for you"), trust it, and **Restart**.
 2. **Create your Hub from this template.** Click **"Use this template" → "Create a new
    repository,"** name it `<yourname>-hub`, and set it **Private**. In Cursor:
    **Cmd+Shift+P → "Git: Clone,"** paste the URL, open it.
