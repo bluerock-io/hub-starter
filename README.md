@@ -14,8 +14,8 @@ in this repo is yours to change — the course assumes you will.
 
 You install one thing and clone one thing, and they work together:
 
-1. **The BlueRock plugin** brings the skills and agents — `/bluerock:onboard`,
-   `/bluerock:today`, `/bluerock:wrap-up`, the `daily-brew` and `scribe` agents, the
+1. **The BlueRock plugin** brings the skills and agents — `/onboard`,
+   `/today`, `/wrap-up`, the `daily-brew` and `scribe` agents, the
    Account Research team, and more. Install it once and they work.
 2. **This Hub** is where they run: your `CLAUDE.md`, your `notes/`, your `today.md`, and the
    `design/` dashboard. The dashboard needs both — the plugin writes the data, your Hub
@@ -23,8 +23,10 @@ You install one thing and clone one thing, and they work together:
    the two are different things.)
 
 You rarely type the full command. Say what you want — *"wrap up my session,"* *"draft a
-follow-up from this call"* — and Claude picks the right skill. The `/bluerock:` form is
-there when you'd rather be explicit.
+follow-up from this call"* — and Claude picks the right skill. When you'd rather be explicit,
+each tool has a short command like `/wrap-up`: that's the full name `/bluerock:wrap-up` with
+the `/bluerock:` prefix dropped, and it works as long as no other installed tool has the same
+name (right now none do). If a short name is ever taken, the full `/bluerock:` name still works.
 
 ## Quickstart
 
@@ -42,27 +44,27 @@ there when you'd rather be explicit.
 2. **Install the plugin.** In the Claude Code panel, type `/plugins` (plural) → **Marketplaces**
    tab, add `bluerock-io/claude-plugins` → **Plugins** tab, install **bluerock**
    ("Install for you"), trust it, and **Restart**. Then say *"check my workspace"* (or
-   `/bluerock:check`) — with your Hub already there, it confirms you're set.
-3. **Prime your Hub.** Run `/bluerock:onboard` (or just say *"onboard me"*). Fastest
+   `/check`) — with your Hub already there, it confirms you're set.
+3. **Prime your Hub.** Run `/onboard` (or just say *"onboard me"*). Fastest
    start: paste what ChatGPT or Claude already knows about you — the skill hands you a
    prompt to generate that — plus a couple of writing samples. It writes your
    `CLAUDE.md`, `voice.md`, and `objectives.md`, so your Hub knows who you are and how
    you write before you run anything else.
 
 You'll barely touch the terminal. Commits and pushes happen through Cursor's Source Control
-panel — and `/bluerock:wrap-up` does them for you at the end of a session.
+panel — and `/wrap-up` does them for you at the end of a session.
 
 ## What's in your Hub
 
 | Path | What it is |
 |---|---|
-| `CLAUDE.md` | Your standing brief — loads every session. `/bluerock:onboard` fills it (or write it yourself). |
+| `CLAUDE.md` | Your standing brief — loads every session. `/onboard` fills it (or write it yourself). |
 | `voice.md` | Your style guide — every skill reads it so output sounds like you. |
 | `objectives.md` | Your ranked priorities — `daily-brew` reads them to decide your focus. |
-| `today.md` | Your living to-do for the day — `daily-brew` seeds it, `/bluerock:today` updates it, `/bluerock:wrap-up` tallies it. |
+| `today.md` | Your living to-do for the day — `daily-brew` seeds it, `/today` updates it, `/wrap-up` tallies it. |
 | `notes/` | Where your notes live: `scribe` files them, `_TEMPLATE.md` is the shape, `sample-granola.md` is a fictional call to practice on. |
 | `examples/` | Filled-in "what good looks like" profiles (`CLAUDE.example.md`, `voice.example.md`, …) to model your own files on. |
-| `design/dashboard.html` | Your build dashboard. Open it in a browser; `/bluerock:wrap-up` refreshes it from your sessions. |
+| `design/dashboard.html` | Your build dashboard. Open it in a browser; `/wrap-up` refreshes it from your sessions. |
 
 ## The plugin's skills work today; the ones you build are yours
 
@@ -74,7 +76,7 @@ you make your own:
   `/standup`) right alongside the plugin's.
 - **Build an agent** under `.claude/agents/` — give it the same name as a plugin agent
   (like `daily-brew`) and yours takes over.
-- **A couple you just run as-is:** `/bluerock:wrap-up` and `/bluerock:check` power your
+- **A couple you just run as-is:** `/wrap-up` and `/check` power your
   dashboard, so the plugin keeps their format correct for you.
 
 That's the arc: install for skills that work on day one, build your own as you learn

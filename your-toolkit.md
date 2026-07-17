@@ -4,7 +4,7 @@
 This is where your toolkit lives: the skills you can run and the agents you can
 point at your work. It is not filled in yet.
 
-**Say "what can I do"** (or run `/bluerock:whats-installed`) and BlueRock will read
+**Say "what can I do"** (or run `/whats-installed`) and BlueRock will read
 what is actually installed and write your toolkit right here, replacing this
 placeholder.
 

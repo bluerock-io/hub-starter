@@ -4,7 +4,7 @@ This file loads automatically every Claude Code session in this folder.
 Treat it as the standing brief: who I am, what I'm working on, how I like
 to be helped.
 
-> **Fastest way to fill this in:** run `/bluerock:onboard`. Paste what ChatGPT or Claude
+> **Fastest way to fill this in:** run `/onboard` (or say *"onboard me"*). Paste what ChatGPT or Claude
 > already knows about you (it gives you a prompt for that) plus a couple of
 > writing samples, and it drafts this file, `voice.md`, and `objectives.md` for
 > you. Then sharpen them by hand. Prefer to do it yourself? Fill the brackets
