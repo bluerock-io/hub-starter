@@ -7,7 +7,7 @@ of what they did. Unlike a chat window that starts fresh every time, the Hub is 
 real files you control, skills and agents you shape, a setup that grows with your work.
 
 It's the starting line for the [BlueRock for Builders](https://learn.bluerock.io)
-curriculum, which takes you from here to a Hub that runs parts of your day. Everything
+curriculum, which takes you from here to your AI Work Hub that runs parts of your day. Everything
 in this repo is yours to change — the course assumes you will.
 
 ## Two pieces: the plugin and this Hub
@@ -45,7 +45,7 @@ name (right now none do). If a short name is ever taken, the full `/bluerock:` n
    tab, add `bluerock-io/claude-plugins` → **Plugins** tab, install **bluerock**
    ("Install for you"), trust it, and **Restart**. Then say *"check my workspace"* (or
    `/check`) — with your Hub already there, it confirms you're set.
-3. **Prime your Hub.** Run `/onboard` (or just say *"onboard me"*). Fastest
+3. **Set up your Hub.** Run `/onboard` (or just say *"onboard me"*). Fastest
    start: paste what ChatGPT or Claude already knows about you — the skill hands you a
    prompt to generate that — plus a couple of writing samples. It writes your
    `CLAUDE.md`, `voice.md`, and `objectives.md`, so your Hub knows who you are and how
@@ -84,14 +84,16 @@ what you'd change.
 
 ## The curriculum
 
-Six modules at [learn.bluerock.io](https://learn.bluerock.io). Get
-Started is free; the six modules come with the beta:
+Eight sessions at [learn.bluerock.io](https://learn.bluerock.io). Get
+Started is free; the rest come with the beta:
 
-| # | Module | You leave with |
+| # | Session | You leave with |
 |---|---|---|
-| 1 | Anatomy of an agent | Your first agent spec, written |
-| 2 | Prime your Hub | A Hub that knows who you are and how you write |
-| 3 | Skills as operational playbooks | A skill you use weekly |
-| 4 | Agents as your specialists | A specialist agent you made your own |
-| 5 | Async agents | A brief that beats you to your desk |
-| 6 | Your Hub in action | A working system, presented — with your dashboard |
+| 1 | Get Started | Your secure workspace connected and your Hub stood up |
+| 2 | Meet your first agent team | A real result from a ready agent team, in your first session |
+| 3 | Anatomy of an agent | Your first agent spec, written |
+| 4 | Give your agent memory | A Hub that knows who you are and how you write |
+| 5 | Turn a task into a skill | A skill you use weekly |
+| 6 | Assemble a team of agents | Your own team of specialist agents |
+| 7 | Put an agent on a schedule | A brief that beats you to your desk |
+| 8 | Run your system | A working system, running part of your real week |
