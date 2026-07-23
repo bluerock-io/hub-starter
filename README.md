@@ -14,12 +14,13 @@ in this repo is yours to change — the course assumes you will.
 
 You install one thing and clone one thing, and they work together:
 
-1. **The BlueRock plugin** brings the skills and agents — `/onboard`,
-   `/today`, `/wrap-up`, the `daily-brew` and `scribe` agents, the
-   Account Research team, and more. Install it once and they work.
-2. **This Hub** is where they run: your `CLAUDE.md`, your `notes/`, your `today.md`, and the
-   `design/` dashboard. The dashboard needs both — the plugin writes the data, your Hub
-   renders it. (Your Hub lives inside your BlueRock **cloud workspace**, not on your laptop —
+1. **The BlueRock plugin** brings the run-as-is core — `/onboard`, `/today`, `/wrap-up`,
+   `/check`, and the **Account Scorecard** team (`/scorecard`). You run these; you don't edit
+   them. Install it once and they work.
+2. **This Hub** is where they run, and it comes seeded with more: your `CLAUDE.md`, your
+   `notes/`, your `today.md`, the `design/` dashboard, and a set of **agents and skills you own
+   and edit** in `.claude/` (below). The dashboard needs both — the plugin writes the data, your
+   Hub renders it. (Your Hub lives inside your BlueRock **cloud workspace**, not on your laptop —
    the two are different things.)
 
 You rarely type the full command. Say what you want — *"wrap up my session,"* *"draft a
@@ -63,24 +64,25 @@ panel — and `/wrap-up` does them for you at the end of a session.
 | `objectives.md` | Your ranked priorities — `daily-brew` reads them to decide your focus. |
 | `today.md` | Your living to-do for the day — `daily-brew` seeds it, `/today` updates it, `/wrap-up` tallies it. |
 | `notes/` | Where your notes live: `scribe` files them, `_TEMPLATE.md` is the shape, `sample-granola.md` is a fictional call to practice on. |
-| `examples/` | Filled-in "what good looks like" profiles (`CLAUDE.example.md`, `voice.example.md`, …) to model your own files on. |
+| `examples/` | Filled-in "what good looks like" profiles (`CLAUDE.example.md`, `voice.example.md`, `agent.example.md`, …) to model your own files on. |
+| `.claude/agents/` | Agents you own and edit: `daily-brew`, `scribe`, `meeting-prep`, and the Account Research team (`researcher`, `signal-scanner`, `composer`). See `.claude/agents/README.md`. |
+| `.claude/skills/` | Skills you own and edit: `meeting-recap`, `capture`, and `research` (dispatches the Account Research team). |
 | `design/dashboard.html` | Your build dashboard. Open it in a browser; `/wrap-up` refreshes it from your sessions. |
 
-## The plugin's skills work today; the ones you build are yours
+## What you run as-is, and what's yours to edit
 
-You don't copy skills into this repo — the plugin's versions run the moment you install
-it. The curriculum walks you through each one so you can see how it's built, and then
-you make your own:
+Two kinds of tools, and the split is deliberate:
 
-- **Build a skill** under `.claude/commands/` — it runs as your own command (say,
-  `/standup`) right alongside the plugin's.
-- **Build an agent** under `.claude/agents/` — give it the same name as a plugin agent
-  (like `daily-brew`) and yours takes over.
-- **A couple you just run as-is:** `/wrap-up` and `/check` power your
-  dashboard, so the plugin keeps their format correct for you.
+- **The plugin's core, you run as-is:** `/onboard`, `/today`, `/wrap-up`, `/check`, and the
+  Account Scorecard team. `/wrap-up` and `/check` especially stay plugin-owned so they keep your
+  dashboard correct for you.
+- **The agents and skills in `.claude/` are yours:** open them, edit them, build your own
+  alongside. They ship seeded so you have a working set on day one; the curriculum teaches you to
+  edit and extend them. A skill you add under `.claude/skills/` runs as your own command (say,
+  `/standup`); an agent under `.claude/agents/` is a specialist you shape.
 
-That's the arc: install for skills that work on day one, build your own as you learn
-what you'd change.
+That's the arc: a working set on day one, all of it yours to change as you learn what you'd do
+differently.
 
 ## The curriculum
 
