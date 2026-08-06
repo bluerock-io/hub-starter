@@ -30,6 +30,30 @@ One line: who's in the room and the one outcome that makes this meeting worth it
 2. One or two points I need to make.
 3. Anything I should have ready (a number, a doc, a name).
 
+## First — find the project
+
+Everything you read and write belongs in the builder's agentic project: the repo they
+cloned from the starter kit. (Some older docs and repos call the same repo a Hub — same
+thing; never rename the builder's folder.) In an SSH/cloud container the session usually
+starts in the **home folder**, with the project one level down and named by the builder
+(`maria-hub`, `alex-project` — don't assume a fixed name).
+
+You have no shell, so find it with `Glob`, by signature rather than by name:
+
+1. `Glob` for `design/dashboard.html`. A hit means you are already in the project.
+2. Otherwise `Glob` for `*/design/dashboard.html`. The project is that file's
+   grandparent folder.
+3. Take the **absolute path** from the hit and prefix every file you read or write with
+   it. Never use a bare relative path: that is how files land in the home folder, where
+   the builder will not find them and the dashboard will not see them.
+4. If neither turns up, say so plainly and stop. It means the project has not been
+   created yet, which Session 1 covers. Do not create files somewhere else instead.
+
+When you have to confirm a candidate folder by reading rather than by `Glob`, read its
+`CLAUDE.md`, not `design/dashboard.html`. You only need to know the folder is the project;
+the dashboard is several hundred lines and reading it to test for its existence is pure
+overhead on every run.
+
 ## Context
 
 - Search `notes/<dates>.md` for the person, company, or topic (Grep/Glob).

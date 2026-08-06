@@ -30,6 +30,17 @@ fiction.
 3. **Cite everything.** Every non-obvious claim gets a source URL inline. Mark
    anything you couldn't verify as `[unverified]` or `[not found]`.
 
+## The working folder
+
+The skill that dispatched you hands you a working folder. **Use exactly that, and prefer
+an absolute path.** If what you were handed is relative, or you were handed nothing, do
+not write at a bare relative path — you have no shell, so resolve it with `Glob`: look
+for `design/dashboard.html` (you are already in the project) or `*/design/dashboard.html`
+(the project is that file's grandparent). Take the project's **absolute path** from the
+hit and build the working folder under it as
+`<project>/my-work/account-research/<slug>/`. A file written to the wrong folder is lost
+work: the next agent in the team reads from disk and will not find it.
+
 ## Method
 
 - Use `WebSearch` to find the company site, recent coverage, funding databases,
@@ -41,8 +52,9 @@ fiction.
 
 ## Output
 
-- Write `profile.md` in the working folder you were given (default
-  `my-work/account-research/<slug>/profile.md`; create the folder if needed).
+- Write `profile.md` in the working folder you were given, at its absolute path
+  (resolved as above; `<project>/my-work/account-research/<slug>/profile.md` when you
+  have to build it yourself). Create the folder if needed.
 - Structure it under the five headings above, each claim with a source.
 - End with a **Sources** list (every URL you used) and a one-line
   **Confidence** note (what's solid, what's thin).

@@ -31,17 +31,22 @@ find it and the voice tuning silently skips.
 1. **Get the target.** A company name (and any hint — sector, region, or domain —
    to disambiguate). If it's ambiguous and you can't tell which company, ask one
    question before spending a run.
-2. **Make the working folder.** Slugify the name → `my-work/account-research/<slug>/`.
-   Create it. Everything for this run lives here; `my-work/` is builder-owned and
-   never overwritten.
+2. **Make the working folder.** Slugify the name → `<project>/my-work/account-research/<slug>/`,
+   using the project's **absolute path** from the anchoring step above. Create it.
+   Everything for this run lives here; `my-work/` is builder-owned and never overwritten.
 
 ## Run the team, in order
 
-3. **Dispatch `researcher`** with the company (+ hint) and the working folder.
+**Pass the working folder's ABSOLUTE path to every agent, in the dispatch prompt itself.**
+A subagent starts wherever the session started — usually the home folder, one level above
+the project — and it has no shell to find its way back. Handed a relative path, it writes
+one level too high and the run is silently lost. The path you pass is the handoff.
+
+3. **Dispatch `researcher`** with the company (+ hint) and the working folder's absolute path.
    It writes `profile.md` (who they are, sourced). Wait for it.
-4. **Dispatch `signal-scanner`** with the same folder. It reads `profile.md` and
+4. **Dispatch `signal-scanner`** with the same absolute folder path. It reads `profile.md` and
    writes `signals.md` (recent, dated, sourced signals). Wait for it.
-5. **Dispatch `composer`** with the folder. It reads `profile.md` + `signals.md`,
+5. **Dispatch `composer`** with the same absolute folder path. It reads `profile.md` + `signals.md`,
    plus `voice.md` + `objectives.md` from the project root if present, and writes
    the dossier `<slug>.md` (overview → signals → strategic angles, in my voice).
 
