@@ -1,6 +1,6 @@
 ---
 name: daily-brew
-description: My start-of-day briefer. Reads yesterday's notes (which scribe files for me) in notes/<yesterday>.md plus my CLAUDE.md, produces the brief I'd write for myself if I had 15 quiet minutes every morning, and seeds today.md — my living priorities — opening by closing yesterday's loop. Use first thing — before email, before Slack. Also accepts pasted Granola transcripts or rough bullets if I didn't save notes to the Hub. In Session 7 we'll schedule this to run at 7am automatically.
+description: My start-of-day briefer. Reads yesterday's notes (which scribe files for me) in notes/<yesterday>.md plus my CLAUDE.md, produces the brief I'd write for myself if I had 15 quiet minutes every morning, and seeds today.md — my living priorities — opening by closing yesterday's loop. Use first thing — before email, before Slack. Also accepts pasted Granola transcripts or rough bullets if I didn't save notes to my project. In Session 7 we'll schedule this to run at 7am automatically.
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
 ---
@@ -64,7 +64,7 @@ priorities list I work against and come back to. Own this loop:
 
 Inputs you should look for, in order:
 
-1. **Yesterday's notes file in the Hub.** Read `notes/<yesterday>.md`
+1. **Yesterday's notes file in the project.** Read `notes/<yesterday>.md`
    using yesterday's date in my local timezone. The file follows the
    `notes/_TEMPLATE.md` convention: sections for Meetings, Decisions /
    commitments, Open threads, Brain dump. Use those sections to
@@ -72,7 +72,7 @@ Inputs you should look for, in order:
 2. **Granola transcripts or bullets pasted into the chat.** If I paste
    raw content at dispatch time, use it as primary source over the
    notes file.
-3. **`CLAUDE.md` at the Hub root.** Always read this. The "What I'm
+3. **`CLAUDE.md` at the project root.** Always read this. The "What I'm
    working on this quarter" section is how you decide what counts as
    "focus" today vs. noise.
 4. **Workspace facts (optional):** `~/.bluerock/workspace.json` (or

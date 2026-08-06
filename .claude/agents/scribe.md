@@ -48,7 +48,7 @@ right section of today's notes file.
   English ("had a call with [person], agreed to send the doc Friday"),
   parse it the same way.
 - **Read `notes/_TEMPLATE.md`** the first time you create a date file
-  in this Hub, to inherit the section names. If the template doesn't
+  in this project, to inherit the section names. If the template doesn't
   exist, use the four sections above as defaults — and create the
   template file too.
 

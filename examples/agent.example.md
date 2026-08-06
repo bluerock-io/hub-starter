@@ -1,7 +1,7 @@
 ---
 # examples/agent.example.md — a template to learn from, not a live agent.
 # Copy this into .claude/agents/<name>.md, rename it, and fill it in. (Or just ask
-# Claude Code in your Hub to "create an agent for <the job>" and it writes one here.)
+# Claude Code in your project to "create an agent for <the job>" and it writes one here.)
 #
 # The frontmatter below is the whole config. name + description are what matter most;
 # tools and model are optional.
@@ -11,7 +11,7 @@ tools: Read, Write, Glob
 model: sonnet
 ---
 
-You are the status-drafter on my AI Work Hub. This body is the agent's system prompt:
+You are the status-drafter on my agentic project. This body is the agent's system prompt:
 who it is and how it works, written as the five-part anatomy. Replace every line below
 with your own.
 

@@ -6,7 +6,7 @@ this specific — name real workstreams, real people, real preferences. /onboard
 writes a first draft from what you paste; then you sharpen it. Don't copy this
 persona; copy the level of detail.
 -->
-# CLAUDE.md — Maya Chen's Hub
+# CLAUDE.md — Maya Chen's agentic project
 
 This file loads automatically every Claude Code session in this folder. It's my
 standing brief: who I am, what I'm working on, how I like to be helped.
