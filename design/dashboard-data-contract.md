@@ -2,14 +2,15 @@
 
 > Derived from `design/dashboard-mockup.png` (the approved BlueRock Dashboard mockup).
 > Beta has **no BR OTEL/sensor data** — every value below is sourced from files the
-> starter project's `/bluerock:wrap-up` skill emits about Linda's own builder activity.
+> builder's agentic project's `/bluerock:wrap-up` skill emits about Linda's own builder
+> activity.
 > **Label decision (Linda, 2026-06-17):** "Sensor-sourced" is **softened** to honest
 > framing ("From your sessions") since beta data is `/bluerock:wrap-up`, not OTEL. The renderer
 > ships with this softened wording.
 
 ## Delivery model (Linda, 2026-06-17)
-The dashboard is **not** a Next.js route. It is a **design stored in the starter Cursor
-project** that renders as a **local HTML page** — no server. The starter project's
+The dashboard is **not** a Next.js route. It is a **design stored in the builder's
+agentic project** that renders as a **local HTML page** — no server. The project's
 `/bluerock:wrap-up` skill regenerates the data file from the builder's own session activity, and
 the renderer reads it. This workaround is sufficient for beta.
 
@@ -21,7 +22,7 @@ the renderer reads it. This workaround is sufficient for beta.
   ported from; it is left untouched.
 
 ## Source of truth
-`/bluerock:wrap-up` (runs in the **starter project**, not marketing-hub) writes the per-run atoms
+`/bluerock:wrap-up` (runs in the builder's **agentic project**, not marketing-hub) writes the per-run atoms
 (`runs[]`, below) **and** the pre-rolled sections (cost / actions / perf / brag) computed
 from those atoms at wrap-up time. The renderer just paints — it does not re-aggregate.
 Prefer **structured/typed** output over a prose blob (Linda's standing analytics-preempt
@@ -30,7 +31,7 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 
 ## Chrome (Linda, 2026-06-17)
 - **No left nav.** Single full-width column. The old sidebar nav counts / projects /
-  curriculum list are dropped; the curriculum resume pointer lives in the welcome strip.
+  learning-path list are dropped; the learning-path resume pointer lives in the welcome strip.
 - **Logo** = the `builders-logo-light.svg` lockup in the topbar (copied into `design/`
   for the standalone render), **not** a hand-built mark + text. Brand-blue is logo-only.
 - **Styling** matches the `/learn` site by construction — both use the resolved
@@ -46,7 +47,10 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 ### Welcome strip
 - builder name — **singular "you," single user (not a team/plan)**
 - outputs-shipped count over a **reliable window** ("You've shipped N outputs this week" — counted from `runs[]`, not a last-visit anchor). Zero/unknown → greeting only, **no fabricated count**.
-- curriculum resume pointer (current chapter # + title)
+- learning-path resume pointer — the **`chapter`** key (number + title). The key is named
+  `chapter` and the UI displays "Session"; they differ on purpose. `resume.chapter` is shared
+  across hub-starter, try-bluerock, and the wrap-up skill, so renaming the key breaks three
+  consumers. Only the display text was swept when "Chapter" was retired (2026-08-06).
 
 ### 01 · Activity & spend ("What your agents did and what it cost")
 Layout: the **Actions card leads** (wider); the **Cost card is second**. The Guardrail card is **dropped from the beta layout** (see below).

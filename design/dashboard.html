@@ -8,7 +8,7 @@
 <!--
   BlueRock for Builders — local dashboard renderer (beta).
   Self-contained, no server: open this file directly (file://). It reads
-  window.__BR_DASH__ from dashboard-data.js, which the starter project's
+  window.__BR_DASH__ from dashboard-data.js, which the builder's agentic project's
   /wrap-up skill regenerates from the builder's own session activity.
 
   Palette = resolved palette-cool-paper from try-bluerock/app/br-theme.css,
@@ -403,9 +403,15 @@ h1, h2, h3, .serif {
       el('span', { class: 'badge' }, [icon('sparkle', 18)]),
       el('div', null, [
         el('div', { class: 'title' }, [title]),
-        el('div', { class: 'sub' }, ['Pick up at Chapter ' + D.meta.resume.chapter + ' — ' + D.meta.resume.title.toLowerCase() + '.']),
+        // DISPLAY says "Session"; the DATA KEY stays `chapter`. That split is
+        // deliberate and load-bearing: `resume.chapter` is a shared key across
+        // this repo, try-bluerock, and the wrap-up skill, so renaming it here
+        // desyncs three consumers at once. Retired nouns were swept from the
+        // visible text 2026-08-06 ("Chapter" -> Session, "curriculum" -> learning
+        // path); the key was left alone on purpose. Do not "finish the job".
+        el('div', { class: 'sub' }, ['Pick up at Session ' + D.meta.resume.chapter + ' — ' + D.meta.resume.title.toLowerCase() + '.']),
       ]),
-      el('button', { class: 'btn ghost', style: 'margin-left:auto' }, ['Resume curriculum →']),
+      el('button', { class: 'btn ghost', style: 'margin-left:auto' }, ['Resume learning path →']),
     ]);
   }
 

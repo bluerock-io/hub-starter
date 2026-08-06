@@ -1,7 +1,7 @@
 /* ───────────────────────────────────────────────────────────────────────
    BlueRock for Builders — dashboard data (SAMPLE)
    ───────────────────────────────────────────────────────────────────────
-   This is the file the starter project's `/wrap-up` skill OVERWRITES.
+   This is the file the builder's agentic project's `/wrap-up` skill OVERWRITES.
    `dashboard.html` reads `window.__BR_DASH__` from here (loaded via
    <script src>, so it works over file:// with no server).
 
@@ -24,7 +24,7 @@ window.__BR_DASH__ = {
     uptimeLabel: 'online · 16 days',
     trialDaysLeft: 11,
     outputsSince: { count: 3, since: 'this week' }, // single user; window = this week from runs[], not a last-visit anchor
-    resume: { chapter: 3, title: 'Skills as Playbooks' },
+    resume: { chapter: 5, title: 'Turn a task into a skill' },
   },
 
   // ── Productivity trend (weekly) ───────────────────────────────────────
