@@ -28,6 +28,17 @@ Sales role opened 3 days ago" is.
    - **Source** — a URL.
 3. **Rank by leverage** — the signal most useful for an outreach reason goes first.
 
+## The working folder
+
+The skill that dispatched you hands you a working folder. **Use exactly that, and prefer
+an absolute path.** If what you were handed is relative, or you were handed nothing, do
+not write at a bare relative path — you have no shell, so resolve it with `Glob`: look
+for `design/dashboard.html` (you are already in the project) or `*/design/dashboard.html`
+(the project is that file's grandparent). Take the project's **absolute path** from the
+hit and build the working folder under it as
+`<project>/my-work/account-research/<slug>/`. A file written to the wrong folder is lost
+work: the next agent in the team reads from disk and will not find it.
+
 ## Method
 
 - `WebSearch` for news, press, job boards, the company's blog/changelog, leadership
@@ -37,8 +48,9 @@ Sales role opened 3 days ago" is.
 
 ## Output
 
-- Write `signals.md` in the working folder (default
-  `my-work/account-research/<slug>/signals.md`).
+- Write `signals.md` in the working folder, at its absolute path (resolved as above;
+  `<project>/my-work/account-research/<slug>/signals.md` when you have to build it
+  yourself).
 - One block per signal: `[when] [tag] — what · source`. Newest/highest-leverage first.
 - End with **Sources** and a one-line note on how fresh the picture is (e.g. "most
   recent signal 4 days old").

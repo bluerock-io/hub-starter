@@ -20,10 +20,22 @@ you stop.
 
 1. `profile.md` and `signals.md` from the working folder (required — if missing,
    say so and stop; don't fabricate).
-2. `voice.md` at the project root (if present) — match its tone, sentence rhythm,
+2. `voice.md` at the project root (if present; resolve the project's absolute path as
+   below) — match its tone, sentence rhythm,
    and avoid-list. The dossier should sound like the builder, not generic AI.
-3. `objectives.md` at the project root (if present) — use it to tune the strategic
+3. `objectives.md` at the project root (same resolution) — use it to tune the strategic
    angles to what the builder actually cares about.
+
+## The working folder
+
+The skill that dispatched you hands you a working folder. **Use exactly that, and prefer
+an absolute path.** If what you were handed is relative, or you were handed nothing, do
+not write at a bare relative path — you have no shell, so resolve it with `Glob`: look
+for `design/dashboard.html` (you are already in the project) or `*/design/dashboard.html`
+(the project is that file's grandparent). Take the project's **absolute path** from the
+hit and build the working folder under it as
+`<project>/my-work/account-research/<slug>/`. A file written to the wrong folder is lost
+work: the next agent in the team reads from disk and will not find it.
 
 ## The dossier (same shape every time)
 
