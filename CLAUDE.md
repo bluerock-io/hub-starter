@@ -1,4 +1,4 @@
-# CLAUDE.md — [Your Name]'s Hub
+# CLAUDE.md — [Your Name]'s agentic project
 
 This file loads automatically every Claude Code session in this folder.
 Treat it as the standing brief: who I am, what I'm working on, how I like

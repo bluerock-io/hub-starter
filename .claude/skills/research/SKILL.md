@@ -11,19 +11,19 @@ description: >-
 Run the Account Research team on a target company and produce the dossier — the
 shareable artifact. You orchestrate three agents; they do the work.
 
-## First — anchor to the Hub
+## First — anchor to the project
 
 The dossier, its working folder, and the `voice.md` / `objectives.md` the run reads all
-live in the builder's Hub — the repo they cloned from the starter. In an SSH/cloud
-container the session usually starts in the **home folder**, with the Hub one level
-down. The builder named it when they cloned (`maria-hub`, `alex-hub` — don't assume a
+live in the builder's project — the repo they cloned from the starter kit. (Some older docs and repos call the same repo a Hub — same thing; never rename the builder's folder.) In an SSH/cloud
+container the session usually starts in the **home folder**, with the project one level
+down. The builder named it when they cloned (`maria-hub`, `alex-project` — don't assume a
 fixed name like `hub-starter`); identify it by its signature, not its name. Before you
-start: run `ls`. See `CLAUDE.md` and `design/` side by side? You're in the Hub. If not,
+start: run `ls`. See `CLAUDE.md` and `design/` side by side? You're in the project. If not,
 find it: `ls */CLAUDE.md`, then `ls ~/*/CLAUDE.md`, else
 `find ~ -maxdepth 3 -path '*/design/dashboard.html'`. `cd` into that folder, capture its
 **absolute path** with `pwd`, and use that full path for the working folder and the
 files you read (e.g. `/home/you/maria-hub/my-work/…`). Can't find it? Ask the builder
-where they cloned their Hub. Working outside it means the dossier lands where they can't
+where they cloned their project. Working outside it means the dossier lands where they can't
 find it and the voice tuning silently skips.
 
 ## Setup
