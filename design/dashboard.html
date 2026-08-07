@@ -6,7 +6,7 @@
 <title>BlueRock Dashboard · for Builders</title>
 
 <!--
-  BlueRock for Builders — local dashboard renderer (beta).
+  BlueRock for AI Builders — local dashboard renderer (beta).
   Self-contained, no server: open this file directly (file://). It reads
   window.__BR_DASH__ from dashboard-data.js, which the builder's agentic project's
   /wrap-up skill regenerates from the builder's own session activity.
@@ -380,7 +380,7 @@ h1, h2, h3, .serif {
 
   // ── topbar (logo lockup, no left nav) ───────────────────────────────────
   function topbar() {
-    var logo = el('img', { class: 'logo', src: 'builders-logo-light.svg', alt: 'BlueRock for Builders' });
+    var logo = el('img', { class: 'logo', src: 'builders-logo-light.svg', alt: 'BlueRock for AI Builders' });
     var right = el('div', { class: 'spacer', style: 'display:flex;align-items:center;gap:10px' }, [
       el('span', { class: 'pill coral sm' }, ['Trial · ' + D.meta.trialDaysLeft + ' days left']),
       el('button', { class: 'btn ghost' }, [icon('help', 15), 'Help']),

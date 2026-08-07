@@ -1,5 +1,5 @@
 /* ───────────────────────────────────────────────────────────────────────
-   BlueRock for Builders — dashboard data (SAMPLE)
+   BlueRock for AI Builders — dashboard data (SAMPLE)
    ───────────────────────────────────────────────────────────────────────
    This is the file the builder's agentic project's `/wrap-up` skill OVERWRITES.
    `dashboard.html` reads `window.__BR_DASH__` from here (loaded via

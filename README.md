@@ -1,4 +1,4 @@
-# BlueRock for Builders — Starter
+# BlueRock for AI Builders — Starter
 
 Make your own copy of this template and you have **your agentic project** — your home base for working
 with AI. It knows who you are and how you write, holds your notes and priorities, and runs
