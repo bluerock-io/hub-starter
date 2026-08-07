@@ -73,14 +73,19 @@ overhead on every run.
 The brief isn't just read — it seeds the day. `today.md` is the living
 priorities list I work against and come back to. Own this loop:
 
-1. **Open by closing yesterday's loop.** If `today.md` exists from a prior
-   day, count it: items I checked off (`[x]`) vs. set, and what's still open
-   (`[ ]`). Lead the brief with one line — e.g. *"Yesterday: 2 of 3 closed;
-   1 carried over."* Skip the line if there's no prior `today.md`.
+1. **Open by closing yesterday's loop.** If `today.md` carries real items
+   from a prior day, count them: items I checked off (`[x]`) vs. set, and
+   what's still open (`[ ]`). Lead the brief with one line — e.g. *"Yesterday:
+   2 of 3 closed; 1 carried over."* **Skip the line entirely when there are no
+   state-marked (`[ ]` / `[x]` / `[>]`) items** — no prior file, or a `today.md`
+   the builder hasn't used yet. A first run has nothing to close; opening with
+   a tally invents a priority they never set.
 2. **Seed today's `today.md`** after producing the brief: write "Today's
    focus" as `[ ]` items (ranked by leverage), carry any still-open items
    forward as `[>]`, and add a "Decisions waiting" block beneath. Merge —
-   don't duplicate items already there.
+   don't duplicate items already there. If the seeded placeholder lines are
+   still there (the parenthetical under Focus or Decisions waiting), replace
+   them; they are prompts for the first run, not content to keep.
 3. `today.md` is the single source: `/bluerock:today` and `wrap-up` read and
    update the same file. Keep the format scannable and typed enough to count.
 
