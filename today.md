@@ -1,10 +1,10 @@
 # Today — YYYY-MM-DD
 
 ## Focus
-- [ ] (your top priority — daily-brew fills this each morning)
+(daily-brew seeds your top priority here each morning.)
 
 ## Decisions waiting
-- (who's waiting, on what, by when)
+(who's waiting, on what, by when)
 
 <!--
 This is your living priorities list. daily-brew seeds it each morning;
