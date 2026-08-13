@@ -11,11 +11,11 @@ pasted snippet; you file it so it's not lost and it shows up where it should.
 
 ## First — anchor to the project
 
-Notes belong in the builder's project. In the Cloud AI Workspace the project ships with the
-image and the session **usually starts inside it** (the folder is named `my-workspace`;
-older setups have it one level below the home folder under a name the builder chose).
-Identify it by its signature, not its name. Before filing: run `ls`. See `CLAUDE.md` and
-`design/` side by side? You're in the project — that is the common case, so check it first.
+Notes belong in the builder's project — the folder holding `CLAUDE.md` and `design/` side by
+side. **The session usually starts inside it already**, so check that first. Its folder is
+normally named `my-workspace`, but identify it by that signature, not by its name (older
+setups have it one level below the home folder under a name the builder chose). Before
+filing: run `ls`. See `CLAUDE.md` and `design/` side by side? You're in the project.
 If not, find it: `ls */CLAUDE.md`, then `ls ~/*/CLAUDE.md`, else
 `find ~ -maxdepth 3 -path '*/design/dashboard.html'`. `cd` into that folder, capture its
 **absolute path** with `pwd`, and file notes at that full path

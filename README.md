@@ -24,9 +24,10 @@ don't have to copy or set up anything to get it. The one thing you add is the pl
 
 The dashboard needs both — the plugin writes the data, your project renders it.
 
-> Your project runs inside your **Cloud AI Workspace**, not on your laptop. The two are different
-> things: the workspace is the environment BlueRock provides, the project is what you own. (The
-> folder is named `my-workspace`; what's inside it is your project.)
+> Two things worth keeping straight. Your **Cloud AI Workspace** is the secure cloud environment
+> BlueRock runs for you — that's where everything happens, not on your laptop. **Your project**
+> is what you own inside it: this folder and everything in it. Don't let the folder name throw
+> you — it's `my-workspace`, but the project is what's in it.
 
 You rarely type a full command. Say what you want — *"wrap up my session,"* *"draft a follow-up
 from this call"* — and Claude picks the right skill. When you'd rather be explicit, use the full

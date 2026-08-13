@@ -71,7 +71,7 @@ Honest set only — everything here is derivable from the skills at beta (no sen
 
 ### 03 · Highlights & recent ("The last five things you shipped")
 - last N run records: `{ts, agent, target, outputFile, runTime}` (filterable: All agents / This week)
-- `agent` renders as a named column (tone-matched to the Actions donut) so the builder can see which agent or team shipped each output. Multi-agent runs are attributed to the **team** the builder invoked (e.g. a `/bluerock:research` run → "Account Research"), not the trailing sub-agent.
+- `agent` renders as a named column (tone-matched to the Actions donut) so the builder can see which agent or team shipped each output. Multi-agent runs are attributed to the **team** the builder invoked (e.g. a `/research` run → "Account Research"), not the trailing sub-agent.
 
 ### Productivity trend (lead chart)
 - `productivity: { metricLabel, weekly: [{ week, actions, outputs, milestone? }] }`

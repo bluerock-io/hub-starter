@@ -24,15 +24,18 @@ Your project comes seeded with a working team so you have a head start:
   optionally `tools`, `model`) plus the five-part anatomy — Identity, Job, Context, Tools,
   Output. See `examples/agent.example.md` for a template.
 
-## Where an agent lives (scope)
+## Where an agent lives
 
-- **In this project** — an agent in `.claude/agents/` (here) works whenever you're in this project,
-  and it travels with the repo when you commit. This is the right home for most of your agents.
-- **In every project** — once an agent is good enough that you want it everywhere, save a copy
-  at `~/.claude/agents/<name>.md`. It's then available in all your projects on this machine (but
-  it isn't part of this project).
+**This folder.** That's it — there's one home for your agents and you're looking at it. An
+agent here works whenever you're in your project, and it travels with the repo when you save
+your work.
+
+You may see `~/.claude/agents` mentioned elsewhere as a second, machine-wide location. In your
+workspace it isn't a separate place: `/bluerock:check` links it to this folder, which is what
+makes your agents load in every new chat. Saving to either path writes to the same files.
 
 ## A note on the BlueRock plugin's agents
 
-A couple of agents (`scout` and `scorer`, the Account Scorecard team) come from the BlueRock
-plugin and run as-is — you don't edit those. Everything in this folder is yours.
+Some agents come from the BlueRock plugin and run as-is — you don't edit those: `scout` and
+`scorer` (the Account Scorecard team) and `site-reader` and `distiller` (the Messaging Doc
+team). Everything in *this* folder is yours.

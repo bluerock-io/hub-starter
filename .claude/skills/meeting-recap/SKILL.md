@@ -14,12 +14,12 @@ whole thing.
 
 ## First — anchor to the project
 
-When I don't paste notes, you read them from my project. In the Cloud AI Workspace the
-project ships with the image and the session **usually starts inside it** (the folder is
-named `my-workspace`; older setups have it one level below the home folder under a name I
-chose). Identify it by its signature, not its name. Before reading a notes file: run `ls`.
-See `CLAUDE.md` and `design/` side by side? You're in the project — that is the common case,
-so check it first. If not, find it: `ls */CLAUDE.md`, then `ls ~/*/CLAUDE.md`, else
+When I don't paste notes, you read them from my project — the folder holding `CLAUDE.md` and
+`design/` side by side. **The session usually starts inside it already**, so check that
+first. Its folder is normally named `my-workspace`, but identify it by that signature, not by
+its name (older setups have it one level below the home folder under a name I chose). Before
+reading a notes file: run `ls`. See `CLAUDE.md` and `design/` side by side? You're in the
+project. If not, find it: `ls */CLAUDE.md`, then `ls ~/*/CLAUDE.md`, else
 `find ~ -maxdepth 3 -path '*/design/dashboard.html'`. `cd` into that folder and read the
 notes at its **absolute path** (e.g. `/home/you/maria-hub/notes/…`). Can't find it? Ask
 me where I cloned my project. (If I pasted the notes into chat, skip all this — you already
