@@ -49,8 +49,8 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 - outputs-shipped count over a **reliable window** ("You've shipped N outputs this week" — counted from `runs[]`, not a last-visit anchor). Zero/unknown → greeting only, **no fabricated count**.
 - learning-path resume pointer — the **`chapter`** key (number + title). The key is named
   `chapter` and the UI displays "Session"; they differ on purpose. `resume.chapter` is shared
-  across hub-starter, try-bluerock, and the wrap-up skill, so renaming the key breaks three
-  consumers. Only the display text was swept when "Chapter" was retired (2026-08-06).
+  across this repo (`my-workspace`, renamed from `hub-starter` 2026-08-13), try-bluerock, and
+  the wrap-up skill, so renaming the key breaks three consumers. Only the display text was swept when "Chapter" was retired (2026-08-06).
 
 ### 01 · Activity & spend ("What your agents did and what it cost")
 Layout: the **Actions card leads** (wider); the **Cost card is second**. The Guardrail card is **dropped from the beta layout** (see below).
