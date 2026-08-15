@@ -1,5 +1,14 @@
 # Builders Dashboard — data contract (what `/bluerock:wrap-up` must emit)
 
+> ⚑ **This file is the single authority on the dashboard's shape, and
+> `/bluerock:wrap-up` (in the `bluerock` plugin, `skills/wrap-up/SKILL.md`, step 2) is its
+> one consumer.** Wrap-up writes only the fields defined here, in the structure defined
+> here: no invented fields, no improvised formats, no restyling. If a value has no honest
+> source, the field gets its defined empty state rather than a plausible number — every
+> such state is specified below. **Changing a field name or shape here breaks the writer
+> and the renderer together**, so change all three in one pass: this file,
+> `dashboard.html`, and the skill.
+
 > Derived from `design/dashboard-mockup.png` (the approved BlueRock Dashboard mockup).
 > Beta has **no BR OTEL/sensor data** — every value below is sourced from files the
 > builder's agentic project's `/bluerock:wrap-up` skill emits about Linda's own builder
@@ -55,7 +64,9 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 ### 01 · Activity & spend ("What your agents did and what it cost")
 Layout: the **Actions card leads** (wider); the **Cost card is second**. The Guardrail card is **dropped from the beta layout** (see below).
 - **Actions · 7d by agent & team:** `{ total, byAgent: [{name, count, tone, timeMin, members?}] }`. Renders as one **horizontal bar per agent/team** (bar length = `count`, as a share of the busiest) plus the time, above a summary (total actions · total time). `name` is required (labels the row); `count` = action total; `tone` = a stable palette key (`coral` · `plum` · `composer` · `sage`; falls back to coral); `timeMin` = wall-clock minutes this week (honestly sourceable from transcript timestamps — unlike tokens/cost). A **team** entry (e.g. Account Research) carries `members: [{name, count, timeMin}]` (members sum to the team's `count` and `timeMin`); the card expands the team into its member agents, so the builder sees both team and individual activity.
-- **Cost · 7d:** today's cost ($1.84), Δ% vs prior, 7-pt daily series (Sun→Today) for the sparkline.
+- **Cost · 7d:** `{ available, today, deltaPct, series }` — today's cost, Δ% vs prior, 7-pt daily series (Sun→Today) for the sparkline.
+  - **`available: false` is the default and it renders "Coming soon" — never a number** (Linda, 2026-08-15). Beta workspaces carry no pricing table, so tokens cannot be turned into dollars honestly, and `$0` with a flat sparkline reads as a real and reassuring figure rather than a missing one. `today`, `deltaPct`, and `series` are ignored while unavailable.
+  - **`available: true` only when a real pricing basis exists in the workspace** that `/bluerock:wrap-up` actually read. Never estimate, never infer a rate, never carry a rate over from another workspace. Same rule as the guardrail card's `wired: false`: an honest empty state beats a fabricated one under a trust label.
 - **Guardrail events · 7d** — data field retained; **card dropped from the beta layout** (no sensor data yet; re-add when wired): `{ wired, events: [{ts, action, rule, outcome, target, source, severity}] }`.
   - `wired:false` (beta default) → honest **"All clean so far · telemetry wiring in progress"**.
   - `wired:true` + empty `events` → substantiated **"All clean — no guardrail events."**

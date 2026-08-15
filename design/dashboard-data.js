@@ -47,8 +47,13 @@ window.__BR_DASH__ = {
   },
 
   // ── 01 · Spend & activity ─────────────────────────────────────────────
-  // Cost · 7d. series is Sun→Today (7 points). deltaPct vs prior day.
+  // Cost · 7d. `available` gates the whole card: false (the default) renders
+  // "Coming soon" and no number. Only set it true when a real pricing basis exists
+  // in this workspace — tokens × a pricing table wrap-up can actually read. A zero
+  // is a claim about spend; missing is missing. series is Sun→Today (7 points),
+  // deltaPct vs prior day, both ignored while unavailable.
   cost: {
+    available: false,
     today: 1.84,
     deltaPct: -12.4,
     series: [2.1, 2.4, 2.9, 2.2, 1.9, 2.1, 1.84],

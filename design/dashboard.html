@@ -455,6 +455,21 @@ h1, h2, h3, .serif {
   }
 
   function costCard() {
+    // Cost has an explicit unavailable state, and it is the DEFAULT until a real pricing
+    // basis exists in the workspace. Beta has no pricing table, so wrap-up cannot turn
+    // tokens into dollars honestly — and "$0 · ↓0% vs yesterday" reads as a real,
+    // reassuring number rather than a missing one. Linda, 2026-08-15: if cost cannot be
+    // effectively estimated, the card says coming soon, never a number.
+    // Set cost.available === true only when the dollars are real.
+    if (!D.cost || D.cost.available !== true) {
+      return el('div', { class: 'card' }, [
+        cardHead('Cost · last 7 days', 'coming soon'),
+        el('div', { style: 'margin-top:10px;font-size:15px;color:var(--ink-500)' }, ['Coming soon']),
+        el('div', { style: 'margin-top:6px;font-size:12.5px;color:var(--ink-500);max-width:34ch' }, [
+          'Your runs are being recorded. What they cost will appear here once spend can be counted accurately.',
+        ]),
+      ]);
+    }
     var delta = D.cost.deltaPct;
     var pill = el('span', { class: 'pill sage', style: 'margin-bottom:4px' }, [(delta <= 0 ? '↓ ' : '↑ ') + Math.abs(delta) + '% · vs yesterday']);
     var top = el('div', { style: 'display:flex;align-items:flex-end;gap:14px;margin-top:8px;flex-wrap:wrap' }, [
