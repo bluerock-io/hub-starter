@@ -4,6 +4,9 @@
 > this so its output sounds like *you*, not generic AI. `/bluerock:onboard` fills this in
 > from your writing samples — or fill it yourself. See `examples/voice.example.md`
 > for what a good one looks like.
+>
+> **The samples themselves live in `writing-samples/`, one file each** — this file
+> describes your voice; that folder holds proof of it. See `writing-samples/README.md`.
 
 ## Tone
 [e.g., Direct and warm. No hype, no filler. I'd rather be plain than polished.]

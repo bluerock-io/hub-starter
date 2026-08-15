@@ -10,5 +10,12 @@ start, or something not working? `/bluerock:help` works the moment the plugin
 loads.)
 
 It always reflects your current plugin, so re-run it anytime, especially after an
-update, to refresh the list. Your BlueRock tools install at the account level, so
-they stay current on their own; this file is just your browsable map of them.
+update, to refresh the list. This file is your browsable map of the tools, not the
+tools themselves.
+
+**They do not update themselves unless you told them to.** Your BlueRock tools install
+at the account level, and they stay current only if you accepted **"Sync automatically"**
+when you installed the plugin. If you skipped it, you update by hand — and the app's
+**Update** button is not a reliable signal, because it compares against a cached copy of
+the marketplace rather than against the source. `bluerock-plugins.md` has the steps that
+actually work. `/bluerock:check` will tell you if you have drifted behind.

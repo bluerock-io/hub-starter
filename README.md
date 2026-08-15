@@ -64,6 +64,7 @@ You'll barely touch the terminal. `/bluerock:wrap-up` saves your work at the end
 |---|---|
 | `CLAUDE.md` | Your standing brief — loads every session. `/bluerock:onboard` fills it (or write it yourself). |
 | `voice.md` | Your style guide — every skill reads it so output sounds like you. |
+| `writing-samples/` | Things you actually wrote, one file each. `voice.md` describes your voice; this is where a skill finds proof of it. |
 | `objectives.md` | Your ranked priorities — `daily-brew` reads them to decide your focus. |
 | `today.md` | Your living to-do for the day — `daily-brew` seeds it, `/bluerock:today` updates it, `/bluerock:wrap-up` tallies it. |
 | `bluerock-plugins.md` | The plugin marketplace this project expects, and how to install it. |

@@ -26,12 +26,18 @@ our docs four separate times, so use what is here and nothing else.
 
 ### First, ask which app they're in
 
-**You cannot do this step for them, and you cannot see which app they're using.** Ask:
+**You cannot do this step for them: it happens in a menu, outside this chat.** So ask, and
+confirm out loud what they are looking at before you send them into a settings screen:
 
 > "Are you in Claude Desktop, or in Cursor or VS Code?"
 
 The two paths are genuinely different — Claude Desktop has no slash command for this. If they
 don't know, ask what they double-clicked to open the window they're typing in.
+
+(Asking is the right step here even though the session environment usually names the client
+in `CLAUDE_CODE_ENTRYPOINT`. Confirming a menu path out loud is worth a beat. Don't tell a
+builder you have no way of knowing, though — that isn't true, and it is where the belief
+came from that nothing in the toolkit can tell which app they are in.)
 
 ### Claude Desktop
 
@@ -95,6 +101,37 @@ succeeded is worse than no check.** Use `/bluerock:check`.
 Say what they now have, in one line — the BlueRock tools are installed and will be there in every
 new chat — and point them at `/bluerock:check` if they haven't run it, or at
 `/bluerock:onboard` if they have.
+
+---
+
+## Updating the plugin
+
+New sessions and fixes ship in the plugin, so a builder sitting on an old copy is missing
+work that already exists. There is no notification, and one signal actively misleads:
+
+⚠️ **A greyed-out Update button does not mean up to date.** The in-app **Update** button
+compares against the app's *cached* copy of the marketplace, not against GitHub. When the
+cache is stale, the button is disabled and the plugin stays behind. The ⋮ menu offers only
+Cursor / Show in folder / Remove — there is no refresh.
+
+**The reliable fix is to remove it and add it back.** Order matters: reinstalling without
+removing the marketplace reads the same stale cache and gives you the old version again.
+
+1. Remove the **BlueRock Builder Toolkit** plugin.
+2. Remove the marketplace.
+3. Add the marketplace again: `https://github.com/bluerock-io/claude-plugins`
+4. Install **BlueRock Builder Toolkit**.
+5. Accept **"Sync automatically"** when it is offered. It opens a separate GitHub
+   authorization window — a normal part of keeping the plugin current, and a different
+   thing from signing in to BlueRock.
+6. Quit the app fully and reopen it.
+
+⚠️ **These menu steps were walked once, on Claude Desktop, on 2026-08-15.** They are
+provisional until someone walks them again on a current build. Don't improvise around
+them; if a screen doesn't match, say so rather than guessing the nearest equivalent.
+
+Once the plugin is loaded, `/bluerock:check` will say whether the tools are current, and
+`/bluerock:wrap-up` mentions it if you have drifted behind.
 
 ---
 
