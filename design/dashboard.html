@@ -11,12 +11,12 @@
   window.__BR_DASH__ from dashboard-data.js, which the builder's agentic project's
   /wrap-up skill regenerates from the builder's own session activity.
 
-  Palette = resolved palette-cool-paper from try-bluerock/app/br-theme.css,
-  the SAME tokens as the /learn site (learn-theme.css) — same cream/coral/ink
+  Palette = the resolved BlueRock builders palette (cool-paper),
+  the SAME tokens as learn.bluerock.io — same cream/coral/ink
   families, radii, blue-tinted shadows, and Source Serif 4 / DM Sans /
   JetBrains Mono stack. Brand-blue lives only in the logo lockup; UI accent
-  is coral. No left nav (single full-width column). Trend chart mirrors the
-  Hub metrics AreaChart aesthetic in vanilla SVG.
+  is coral. No left nav (single full-width column). Trend chart is a
+  dashed-reference-line area chart in vanilla SVG.
 -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -303,7 +303,7 @@ h1, h2, h3, .serif {
     return s;
   }
 
-  // ── area trend chart (Hub metrics AreaChart aesthetic, vanilla SVG) ─────
+  // ── area trend chart (dashed-reference-line area style, vanilla SVG) ────
   function smoothPath(pts) {
     if (pts.length < 2) return pts.length ? 'M' + pts[0][0] + ',' + pts[0][1] : '';
     var d = 'M' + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
@@ -405,13 +405,16 @@ h1, h2, h3, .serif {
         el('div', { class: 'title' }, [title]),
         // DISPLAY says "Session"; the DATA KEY stays `chapter`. That split is
         // deliberate and load-bearing: `resume.chapter` is a shared key across
-        // this repo, try-bluerock, and the wrap-up skill, so renaming it here
-        // desyncs three consumers at once. Retired nouns were swept from the
+        // this repo, the wrap-up skill, and other BlueRock consumers, so renaming
+        // it here desyncs them at once. Retired nouns were swept from the
         // visible text 2026-08-06 ("Chapter" -> Session, "curriculum" -> learning
         // path); the key was left alone on purpose. Do not "finish the job".
         el('div', { class: 'sub' }, ['Pick up at Session ' + D.meta.resume.chapter + ' — ' + D.meta.resume.title.toLowerCase() + '.']),
       ]),
-      el('button', { class: 'btn ghost', style: 'margin-left:auto' }, ['Resume learning path →']),
+      // A real link, not a button: the page can't reliably deep-link the exact
+      // session (routes shift at the v4 cutover), so it points at Learning
+      // Paths — the version of this promise that stays true.
+      el('a', { class: 'btn ghost', style: 'margin-left:auto; text-decoration:none', href: 'https://learn.bluerock.io', target: '_blank', rel: 'noopener noreferrer' }, ['Resume learning path →']),
     ]);
   }
 
@@ -458,8 +461,8 @@ h1, h2, h3, .serif {
     // Cost has an explicit unavailable state, and it is the DEFAULT until a real pricing
     // basis exists in the workspace. Beta has no pricing table, so wrap-up cannot turn
     // tokens into dollars honestly — and "$0 · ↓0% vs yesterday" reads as a real,
-    // reassuring number rather than a missing one. Linda, 2026-08-15: if cost cannot be
-    // effectively estimated, the card says coming soon, never a number.
+    // reassuring number rather than a missing one. Standing rule (2026-08-15): if cost
+    // cannot be effectively estimated, the card says coming soon, never a number.
     // Set cost.available === true only when the dollars are real.
     if (!D.cost || D.cost.available !== true) {
       return el('div', { class: 'card' }, [
@@ -560,7 +563,10 @@ h1, h2, h3, .serif {
       ', read ', el('strong', null, [b.filesRead + ' files']),
       ', and used ', el('strong', null, [b.tokens + ' tokens']),
       ' on ', el('span', { class: 'mono', style: 'font-size:14px' }, [b.model]), '.',
-      b.guardrailEvents === 0 ? el('span', { class: 'clean' }, [' Zero guardrail events.']) : (' ' + b.guardrailEvents + ' guardrail events.'),
+      // No guardrail clause at beta: without sensor data, "Zero guardrail
+      // events" claims monitoring that isn't happening. The data key stays
+      // (contract shape unchanged); the sentence just doesn't voice it until
+      // the pipeline is wired — same honesty rule as the cost card.
     ]);
     var kicker = el('div', { class: 'kicker' }, [el('span', { style: 'color:var(--clay-700)' }, [icon('sparkle', 16)]), el('span', { class: 'eyebrow' }, ['Brag stat · this week'])]);
     var foot = el('div', { class: 'foot' }, ['Summarized from your own sessions this week.']);

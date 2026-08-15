@@ -23,9 +23,11 @@ window.__BR_DASH__ = {
   sample: true,
 
   // ── Workspace meta (topbar + sidebar footer) ──────────────────────────
+  // Sample identity, fictional like the runs below — /bluerock:wrap-up
+  // overwrites it with the builder's own on the first real rollup.
   meta: {
-    builder: 'Linda',
-    workspace: 'linda-vu-9c2',
+    builder: 'Maria',
+    workspace: 'maria-r-4x7',
     region: 'cloud-east-1',
     uptimeLabel: 'online · 16 days',
     trialDaysLeft: 11,

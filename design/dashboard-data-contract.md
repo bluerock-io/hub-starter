@@ -9,15 +9,15 @@
 > and the renderer together**, so change all three in one pass: this file,
 > `dashboard.html`, and the skill.
 
-> Derived from `design/dashboard-mockup.png` (the approved BlueRock Dashboard mockup).
+> Derived from the approved BlueRock Dashboard design.
 > Beta has **no BR OTEL/sensor data** — every value below is sourced from files the
-> builder's agentic project's `/bluerock:wrap-up` skill emits about Linda's own builder
+> builder's agentic project's `/bluerock:wrap-up` skill emits about the builder's own
 > activity.
-> **Label decision (Linda, 2026-06-17):** "Sensor-sourced" is **softened** to honest
+> **Label decision (2026-06-17):** "Sensor-sourced" is **softened** to honest
 > framing ("From your sessions") since beta data is `/bluerock:wrap-up`, not OTEL. The renderer
 > ships with this softened wording.
 
-## Delivery model (Linda, 2026-06-17)
+## Delivery model
 The dashboard is **not** a Next.js route. It is a **design stored in the builder's
 agentic project** that renders as a **local HTML page** — no server. The project's
 `/bluerock:wrap-up` skill regenerates the data file from the builder's own session activity, and
@@ -27,25 +27,22 @@ the renderer reads it. This workaround is sufficient for beta.
 - `design/dashboard-data.js` — the data file `/bluerock:wrap-up` **overwrites**; sets
   `window.__BR_DASH__` and is loaded by `<script src>` so it works without a server
   (a `fetch()` of a local JSON is blocked over `file://`; a `<script src>` is not).
-- The existing `app/dashboard/` React scaffold is the **design reference** these were
-  ported from; it is left untouched.
-
 ## Source of truth
-`/bluerock:wrap-up` (runs in the builder's **agentic project**, not marketing-hub) writes the per-run atoms
+`/bluerock:wrap-up` (runs in the builder's **agentic project**) writes the per-run atoms
 (`runs[]`, below) **and** the pre-rolled sections (cost / actions / perf / brag) computed
 from those atoms at wrap-up time. The renderer just paints — it does not re-aggregate.
-Prefer **structured/typed** output over a prose blob (Linda's standing analytics-preempt
-pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.js`):
+Prefer **structured/typed** output over a prose blob — structured fields at design time
+beat re-parsing prose later. The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.js`):
 `{ meta, productivity, priorities, cost, actions, guardrail, perf, brag, runs }`.
 
-## Chrome (Linda, 2026-06-17)
+## Chrome
 - **No left nav.** Single full-width column. The old sidebar nav counts / projects /
   learning-path list are dropped; the learning-path resume pointer lives in the welcome strip.
 - **Logo** = the `builders-logo-light.svg` lockup in the topbar (copied into `design/`
   for the standalone render), **not** a hand-built mark + text. Brand-blue is logo-only.
-- **Styling** matches the `/learn` site by construction — both use the resolved
-  `palette-cool-paper` tokens from `app/br-theme.css` / `learn-theme.css` (same cream /
-  coral / ink families, radii, blue shadows, Source Serif 4 / DM Sans / JetBrains Mono).
+- **Styling** matches learn.bluerock.io by construction — both use the resolved
+  BlueRock builders palette (cool-paper: same cream / coral / ink families, radii, blue
+  shadows, Source Serif 4 / DM Sans / JetBrains Mono).
 
 ### Seed honesty
 - **`sample: true`** — top-level flag, set by the seeded `dashboard-data.js` only. Renders one quiet line above the welcome strip: *"Sample data — your own numbers replace this after your first wrap-up."* Every card on the page rolls up from the same seeded `runs[]`, so before a builder's first wrap-up the whole dashboard shows a stranger's week; the flag makes that a demo rather than a deception.
@@ -54,7 +51,7 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 ## Fields the mockup needs
 
 ### Workspace meta (topbar)
-- **Header simplified (Linda, 2026-06-24):** logo lockup at 3× (90px); **dropped** workspace name/region, "online · N days" uptime, and "Open in Cursor". Topbar = logo + Trial pill / Help / avatar.
+- **Header simplified (2026-06-24):** logo lockup at 3× (90px); **dropped** workspace name/region, "online · N days" uptime, and "Open in Cursor". Topbar = logo + Trial pill / Help / avatar.
 - trial days left ("11 days left") — **account arithmetic** (`14 − days since trial start`; 14-day trial), seeded at provisioning, not telemetry.
 
 ### Welcome strip
@@ -62,14 +59,14 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
 - outputs-shipped count over a **reliable window** ("You've shipped N outputs this week" — counted from `runs[]`, not a last-visit anchor). Zero/unknown → greeting only, **no fabricated count**.
 - learning-path resume pointer — the **`chapter`** key (number + title). The key is named
   `chapter` and the UI displays "Session"; they differ on purpose. `resume.chapter` is shared
-  across this repo (`my-workspace`, renamed from `hub-starter` 2026-08-13), try-bluerock, and
-  the wrap-up skill, so renaming the key breaks three consumers. Only the display text was swept when "Chapter" was retired (2026-08-06).
+  across this repo (`my-workspace`, renamed from `hub-starter` 2026-08-13), the wrap-up skill,
+  and other BlueRock consumers, so renaming the key breaks them together. Only the display text was swept when "Chapter" was retired (2026-08-06).
 
 ### 01 · Activity & spend ("What your agents did and what it cost")
 Layout: the **Actions card leads** (wider); the **Cost card is second**. The Guardrail card is **dropped from the beta layout** (see below).
 - **Actions · 7d by agent & team:** `{ total, byAgent: [{name, count, tone, timeMin, members?}] }`. Renders as one **horizontal bar per agent/team** (bar length = `count`, as a share of the busiest) plus the time, above a summary (total actions · total time). `name` is required (labels the row); `count` = action total; `tone` = a stable palette key (`coral` · `plum` · `composer` · `sage`; falls back to coral); `timeMin` = wall-clock minutes this week (honestly sourceable from transcript timestamps — unlike tokens/cost). A **team** entry (e.g. Account Research) carries `members: [{name, count, timeMin}]` (members sum to the team's `count` and `timeMin`); the card expands the team into its member agents, so the builder sees both team and individual activity.
 - **Cost · 7d:** `{ available, today, deltaPct, series }` — today's cost, Δ% vs prior, 7-pt daily series (Sun→Today) for the sparkline.
-  - **`available: false` is the default and it renders "Coming soon" — never a number** (Linda, 2026-08-15). Beta workspaces carry no pricing table, so tokens cannot be turned into dollars honestly, and `$0` with a flat sparkline reads as a real and reassuring figure rather than a missing one. `today`, `deltaPct`, and `series` are ignored while unavailable.
+  - **`available: false` is the default and it renders "Coming soon" — never a number** (2026-08-15). Beta workspaces carry no pricing table, so tokens cannot be turned into dollars honestly, and `$0` with a flat sparkline reads as a real and reassuring figure rather than a missing one. `today`, `deltaPct`, and `series` are ignored while unavailable.
   - **`available: true` only when a real pricing basis exists in the workspace** that `/bluerock:wrap-up` actually read. Never estimate, never infer a rate, never carry a rate over from another workspace. Same rule as the guardrail card's `wired: false`: an honest empty state beats a fabricated one under a trust label.
 - **Guardrail events · 7d** — data field retained; **card dropped from the beta layout** (no sensor data yet; re-add when wired): `{ wired, events: [{ts, action, rule, outcome, target, source, severity}] }`.
   - `wired:false` (beta default) → honest **"All clean so far · telemetry wiring in progress"**.
@@ -82,7 +79,7 @@ Honest set only — everything here is derivable from the skills at beta (no sen
 - `perf.successRate` + `runs {successful, total}` — run = a logged agent run; success = completed without error/guardrail block. The `success` flag is set by `/bluerock:wrap-up` (a model judgment at beta, not a sensor signal).
 - `perf.avgSessionMin` + `perf.avgSessionDeltaMin` — **avg session length** (from `session-metrics.py`), neutral WoW delta (shorter is not "better").
 - `perf.outputsShipped` — count of outputs this week from `runs[]`.
-- **Brag stat (this week):** sessions count, tools called, files read, tokens, model name, guardrail-event count → templated sentence.
+- **Brag stat (this week):** sessions count, tools called, files read, tokens, model name → templated sentence. The `guardrailEvents` key stays in the data shape but is **not voiced in the sentence at beta** — without sensor data, "Zero guardrail events" claims monitoring that is not happening (same honesty rule as the cost card's `available: false`). The clause returns when the guardrail pipeline is wired.
 
 ### 03 · Highlights & recent ("The last five things you shipped")
 - last N run records: `{ts, agent, target, outputFile, runTime}` (filterable: All agents / This week)
@@ -92,7 +89,7 @@ Honest set only — everything here is derivable from the skills at beta (no sen
 - `productivity: { metricLabel, weekly: [{ week, actions, outputs, milestone? }] }`
 - Headline series = **`actions` per week** (agent actions = proxy for work delegated; the
   rising curve). `outputs` = things shipped that week (shown as "first → latest /wk").
-- `milestone` annotates a week, rendered as a dashed reference line (Hub AreaChart style).
+- `milestone` annotates a week, rendered as a dashed reference line on the area chart.
 - Rolled up by `/bluerock:wrap-up` from the per-run atoms, bucketed by ISO week.
 
 ### Priorities (closure loop — plugin v0.2)
@@ -133,7 +130,7 @@ fidelity), which sidesteps the "does the block surface as a tool error" uncertai
 sentinel** (e.g. `BLUEROCK_BLOCK rule=ssrf-egress target=…`) — without it you can't tell a
 real block from an ordinary failing command, which would dishonestly inflate the count.
 
-**The one open question (route to David O. / event-sensor plane):** does the BR sensor
+**The one open question (routed to the BlueRock event-sensor team):** does the BR sensor
 (a) exit the blocked tool non-zero with an identifiable stderr sentinel, or (b) write the
 structured event to a session-readable file? Either makes the card *real*. Neither yet =
 card stays in its honest beta state (`wired:false`). Beta has no sensor pipeline, so the
