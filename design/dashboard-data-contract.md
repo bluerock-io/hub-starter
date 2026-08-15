@@ -47,6 +47,10 @@ pref). The pinned top-level shape is `window.__BR_DASH__` (see `dashboard-data.j
   `palette-cool-paper` tokens from `app/br-theme.css` / `learn-theme.css` (same cream /
   coral / ink families, radii, blue shadows, Source Serif 4 / DM Sans / JetBrains Mono).
 
+### Seed honesty
+- **`sample: true`** — top-level flag, set by the seeded `dashboard-data.js` only. Renders one quiet line above the welcome strip: *"Sample data — your own numbers replace this after your first wrap-up."* Every card on the page rolls up from the same seeded `runs[]`, so before a builder's first wrap-up the whole dashboard shows a stranger's week; the flag makes that a demo rather than a deception.
+- **`/bluerock:wrap-up` drops the flag when it writes real rollups** (or writes `sample: false`). It is the one key wrap-up removes rather than updates, and nothing else clears it. The full empty-state design — what this page should look like before any run exists — is a separate decision, deliberately not made here.
+
 ## Fields the mockup needs
 
 ### Workspace meta (topbar)

@@ -613,10 +613,23 @@ h1, h2, h3, .serif {
   }
 
   // ── assemble ──────────────────────────────────────────────────────────
+  // Shown only while the numbers are the seeded sample. `/bluerock:wrap-up` overwrites
+  // this file with real rollups and never carries `sample: true` forward, so the line
+  // disappears at the builder's first wrap-up without anyone clearing it by hand.
+  // A demo the builder knows is a demo is fine; one they mistake for their own week
+  // is not, and every card on this page rolls up from the same seeded runs[].
+  function sampleNotice() {
+    if (!D.sample) return null;
+    return el('div', {
+      style: 'margin: 0 0 14px; font-size: 12.5px; color: var(--ink-500);',
+    }, ['Sample data — your own numbers replace this after your first wrap-up.']);
+  }
+
   function render() {
     document.getElementById('topbar').appendChild(topbar());
     var content = document.getElementById('content');
     [
+      sampleNotice(),
       welcome(),
       el('div', { class: 'section' }, [
         sectionHead('01 · Productivity', 'You’re delegating more to your agents each week.'),
@@ -637,7 +650,7 @@ h1, h2, h3, .serif {
         sectionHead('04 · Highlights & recent', 'The last five things you shipped.', 'Click any to re-open'),
         recentCard(),
       ]),
-    ].forEach(function (node) { content.appendChild(node); });
+    ].forEach(function (node) { if (node) content.appendChild(node); });
   }
 
   render();

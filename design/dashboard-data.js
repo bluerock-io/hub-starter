@@ -16,6 +16,12 @@
    ─────────────────────────────────────────────────────────────────────── */
 
 window.__BR_DASH__ = {
+  // Everything below is seeded sample data, so the page shows a working dashboard
+  // before the builder has run anything. This flag renders one quiet line saying so.
+  // `/bluerock:wrap-up` overwrites this file with real rollups and never carries
+  // `sample: true` forward — that is what retires the line, at the first wrap-up.
+  sample: true,
+
   // ── Workspace meta (topbar + sidebar footer) ──────────────────────────
   meta: {
     builder: 'Linda',
