@@ -1,0 +1,9 @@
+{
+  "extraKnownMarketplaces": {
+    "bluerock": {
+      "source": { "source": "github", "repo": "bluerock-io/claude-plugins" },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": { "bluerock@bluerock": true }
+}
