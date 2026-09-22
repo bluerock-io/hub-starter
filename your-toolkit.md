@@ -1,17 +1,14 @@
 <!-- bluerock-toolkit-version: placeholder -->
 # Your BlueRock toolkit
 
-This is where your toolkit lives: the skills you can run and the agents you can
-point at your work. It is not filled in yet.
+Your toolkit is the skills you can run and the agent teams you can point at your
+work. The list lives in Claude Code, not in this file, so it always matches what you
+actually have installed.
 
-**Say "what can I do"** and BlueRock will read what is actually installed and
-write your toolkit right here, replacing this placeholder. (Not sure where to
-start, or something not working? `/bluerock:help` works the moment the plugin
-loads.)
-
-It always reflects your current plugin, so re-run it anytime, especially after an
-update, to refresh the list. This file is your browsable map of the tools, not the
-tools themselves.
+**To see what you can run, say `/bluerock:check`.** Once it confirms your project is
+live, it lists the use cases you can run right now, each with its command. Not sure
+where to start, or something not working? `/bluerock:help` works the moment the
+plugin loads.
 
 **They do not update themselves unless you told them to.** Your BlueRock tools install
 at the account level, and they stay current only if you accepted **"Sync automatically"**
