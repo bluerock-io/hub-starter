@@ -52,7 +52,7 @@ beat re-parsing prose later. The pinned top-level shape is `window.__BR_DASH__` 
 
 ### Workspace meta (topbar)
 - **Header simplified (2026-06-24):** logo lockup at 3× (90px); **dropped** workspace name/region, "online · N days" uptime, and "Open in Cursor". Topbar = logo + Trial pill / Help / avatar.
-- trial days left ("11 days left") — **account arithmetic** (`14 − days since trial start`; 14-day trial), seeded at provisioning, not telemetry.
+- trial days left ("11 days left") — **account arithmetic** (`30 − days since trial start`; 30-day trial, from 2026-10-07), seeded at provisioning, not telemetry.
 
 ### Welcome strip
 - builder name — **singular "you," single user (not a team/plan)**
